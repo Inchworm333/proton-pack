@@ -1,0 +1,5 @@
+aux in = GPIO 12 
+
+4th from bottom right = ground (black wire)
+5th from bottom right = GPIO 12 (white wire)
+red wire = sound
