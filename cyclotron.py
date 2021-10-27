@@ -4,20 +4,21 @@ import gpiozero
 import colorzero
 import helpers
 
-class cyclotron:
+class Cyclotron:
 
     def __init__(self):
         self.leds = []
-        self.leds.append(RGBLED(0,1,2))
-        self.leds.append(RGBLED(3,4,5))
-        self.leds.append(RGBLED(6,7,8))
-        self.leds.append(RGBLED(9,10,11))
+        self.leds.append(gpiozero.RGBLED(0,1,2))
+        self.leds.append(gpiozero.RGBLED(3,4,5))
+        self.leds.append(gpiozero.RGBLED(6,7,8))
+        self.leds.append(gpiozero.RGBLED(9,10,11))
         
         self.color = "red"
         self.speed = 0.5
-        spin()
+        self.spin = True
+        self.start_spin
 
-    def spin():
+    def start_spin():
         self.spin = True
         threading.Thread(None, spin_function, (self.color, self.speed), {}, True)
 

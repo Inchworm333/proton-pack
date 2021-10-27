@@ -7,8 +7,11 @@ import pigpio
 import sys
 import signal
 
+sys.path.append(".")
+
 #Importing other files
 import wand
+from cyclotron import Cyclotron
 
 #LED color enums
 class LedColor(Enum):
@@ -51,16 +54,19 @@ def main():
     PWM_SAMPLE_TIME = 2.0
 
     #LED setups
-    greenLed = FiringStatusLed(LedColor.GREEN, LED(17))
-    yellowLed = FiringStatusLed(LedColor.YELLOW, LED(16))
-    redLed = FiringStatusLed(LedColor.RED, LED(15))
+    #greenLed = FiringStatusLed(LedColor.GREEN, LED(17))
+    #yellowLed = FiringStatusLed(LedColor.YELLOW, LED(16))
+    #redLed = FiringStatusLed(LedColor.RED, LED(15))
+
+    #cyclotron
+    cyclotron = Cyclotron()
 
     #THREADS
     #threading.Thread(None, wand_read_loop, 'Wand Read', (PWM_GPIO, PWM_RUN_TIME, PWM_SAMPLE_TIME))
 
     #TODO remove this probably
-    #signal.pause()
-    wand_read_loop(PWM_GPIO, PWM_RUN_TIME, PWM_SAMPLE_TIME)
+    signal.pause()
+    #wand_read_loop(PWM_GPIO, PWM_RUN_TIME, PWM_SAMPLE_TIME)
 
 
 main()
