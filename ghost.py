@@ -66,11 +66,3 @@ def main():
 main()
 
 
-class cyclotron:
-
-    def __init__(self):
-        self.leds = []
-        self.leds.append(RGBLED(0,1,2))
-        self.leds.append(RGBLED(3,4,5))
-        self.leds.append(RGBLED(6,7,8))
-        self.leds.append(RGBLED(9,10,11))

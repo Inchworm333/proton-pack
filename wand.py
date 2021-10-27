@@ -1,4 +1,5 @@
 import pigpio
+import helpers
 
 class proton_reader:
 
@@ -84,7 +85,7 @@ def wand_read_loop(GPIO, total_time, sample_time):
                     #Mode Change
                     print('Mode Changed')
                     mode += 1
-                    mode_decode(mode)
+                    print("Mode = " + mode_decode(mode))
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
@@ -109,23 +110,3 @@ def wand_read_loop(GPIO, total_time, sample_time):
 def near(number, ideal):
     return abs(number - ideal) <= 3
 
-def mode_decode(modeID):
-    inner_mode = modeID % 4
-    print(inner_mode)
-    
-    if inner_mode == 0:
-        #Proton
-        print('Shooting Mode: Proton')
-        None
-    elif inner_mode == 1:
-        #Slime
-        print('Shooting Mode: Slime')
-        None
-    elif inner_mode == 2:
-        #Stasis
-        print('Shooting Mode: Stasis')
-        None
-    elif inner_mode == 3:
-        #Meson
-        print('Shooting Mode: Meson')
-        None
