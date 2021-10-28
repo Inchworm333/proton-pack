@@ -48,5 +48,4 @@ class Cyclotron:
             self.color = "blue"
         elif mode_decoded == "meson":
             self.color = "yellow"
-cyclotron = Cyclotron()
 

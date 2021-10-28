@@ -38,9 +38,6 @@ class proton_reader:
     def cancel(self):
         self._callback.cancel()
 
-
-mode = 0 
-
 def wand_read_loop(GPIO, total_time, sample_time):
     
     while True:
@@ -85,7 +82,7 @@ def wand_read_loop(GPIO, total_time, sample_time):
                     #Mode Change
                     print('Mode Changed')
                     mode += 1
-                    print("Mode = " + mode_decode(mode))
+                    print("Mode = " + helpers.mode_decode(mode))
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
