@@ -60,12 +60,15 @@ def main():
 
     #cyclotron
     cyclotron = Cyclotron()
+    #cyclotron.start_spin()
+    while True:
+        None
 
     #THREADS
     #threading.Thread(None, wand_read_loop, 'Wand Read', (PWM_GPIO, PWM_RUN_TIME, PWM_SAMPLE_TIME))
 
     #TODO remove this probably
-    signal.pause()
+    #signal.pause()
     #wand_read_loop(PWM_GPIO, PWM_RUN_TIME, PWM_SAMPLE_TIME)
 
 

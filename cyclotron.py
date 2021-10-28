@@ -3,6 +3,7 @@ import time
 import gpiozero
 import colorzero
 import helpers
+import random
 
 class Cyclotron:
 
@@ -13,23 +14,26 @@ class Cyclotron:
         self.leds.append(gpiozero.RGBLED(6,7,8))
         self.leds.append(gpiozero.RGBLED(9,10,11))
         
-        self.color = "red"
-        self.speed = 0.5
-        self.spin = True
-        self.start_spin
+        self.thread = None
+        self.color = "purple"
+        self.speed = 0.75
+        self.start_spin()
 
-    def start_spin():
-        self.spin = True
-        threading.Thread(None, spin_function, (self.color, self.speed), {}, True)
-
-    def stop_spin():
-        self.spin = False
-
-    def spin_function(color, speed):
+    def spin_function(self, color, speed):
         while self.spin:
             for led in self.leds:
-                led.color = Color(color)
-                sleep(speed)
+                led.color = colorzero.Color(color)
+                #led.pulse(1, 1, (1,0,0), (1,0.5,0.5))
+                time.sleep(speed)
+                led.off()
+
+    def start_spin(self):
+        self.spin = True
+        self.thread = threading.Thread(target=self.spin_function, args=(self.color, self.speed))
+        self.thread.start()
+
+    def stop_spin(self):
+        self.spin = False
 
     def mode():
         global mode
@@ -41,7 +45,8 @@ class Cyclotron:
         elif mode_decoded == "slime":
             self.color = "green"
         elif mode_decoded == "stasis":
-            self.color = "red"
-            #TODO check with philip on color and speeds
+            self.color = "blue"
         elif mode_decoded == "meson":
-            self.color = "red"
+            self.color = "yellow"
+cyclotron = Cyclotron()
+
