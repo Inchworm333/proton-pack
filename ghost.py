@@ -62,9 +62,12 @@ def main():
                     #Power Down
                     print('power down')
                     #SOUNDS HERE
-                    cyclotron.fade_off()
-                    statusleds.fade_off()
-                    vent.fade_off()
+                    if cyclotron not None:
+                        cyclotron.fade_off()
+                    if statusled not None:
+                        statusleds.fade_off()
+                    if vent not None:
+                        vent.fade_off()
                     cyclotron = None
                     statusleds = None
                     vent = None
@@ -113,9 +116,12 @@ def main():
                     #Power Down with sound
                     print('power down (with sound)')
                     #SOUNDS HERE
-                    cyclotron.fade_off()
-                    statusleds.fade_off()
-                    vent.fade_off()
+                    if cyclotron not None:
+                        cyclotron.fade_off()
+                    if statusleds not None:
+                        statusleds.fade_off()
+                    if vent not None:
+                        vent.fade_off()
                     cyclotron = None
                     statusleds = None
                     vent = None
