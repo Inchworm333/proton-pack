@@ -30,21 +30,27 @@ class Vent:
 
     def fade_off(self):
         while col_num > 0:
-            self.led.pulse(0, 3, self.colors[col_num], self.colors[col_num -=1], 1, False)
+            oldnum = col_num
+            col_num -= 1
+            self.led.pulse(0, 3, self.colors[oldnum], self.colors[col_num], 1, False)
         self.led.pulse(0, 3, self.colors[0], (0,0,0), 1, False)
         self.led.off()
 
     def heat_up(self, heating):
         while heating:
             if col_num != 4:
-                self.led.pulse(0, 5, self.colors[col_num], self.colors[col_num +=1], 1, False)
+                oldnum = col_num
+                col_num += 1
+                self.led.pulse(0, 5, self.colors[oldnum], self.colors[col_num], 1, False)
             else:
                 self.led.color = self.colors[4]
 
     def cool_down(self, heating):
         while !heating:
             if col_num > 0:
-                self.led.pulse(0, 2, self.colors[col_num], self.colors[col_num -=1], 1, False)
+                oldnum = col_num
+                col_num -= 1
+                self.led.pulse(0, 2, self.colors[oldnum], self.colors[col_num], 1, False)
             else:
                 self.idle_pulse()
 
