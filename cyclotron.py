@@ -3,7 +3,6 @@ import time
 import gpiozero
 import colorzero
 import helpers
-import random
 
 class Cyclotron:
 
