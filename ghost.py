@@ -64,7 +64,7 @@ def main():
                     #SOUNDS HERE
                     if cyclotron is not None:
                         cyclotron.fade_off()
-                    if statusled is not None:
+                    if statusleds is not None:
                         statusleds.fade_off()
                     if vent is not None:
                         vent.fade_off()
