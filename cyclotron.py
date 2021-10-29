@@ -14,6 +14,7 @@ class Cyclotron:
         self.leds.append(gpiozero.RGBLED(6,7,8))
         self.leds.append(gpiozero.RGBLED(9,10,11))
         
+        self.spin = False
         self.thread = None
         self.color = "red"
         self.speed = 0.85
@@ -40,6 +41,7 @@ class Cyclotron:
 
     def stop_spin(self):
         self.spin = False
+        self.thread.join()
         for led in self.leds:
             led.off()
 
@@ -53,23 +55,23 @@ class Cyclotron:
 
         if mode_decoded == "proton":
             #SOUNDS HERE
-            self.color = "red"
             self.stop_spin()
+            self.color = "red"
             self.start_spin(self.spin_function)
         elif mode_decoded == "slime":
             #SOUNDS HERE
-            self.color = "green"
             self.stop_spin()
+            self.color = "green"
             self.slime_bubble_start()
         elif mode_decoded == "stasis":
             #SOUNDS HERE
-            self.color = "blue"
             self.stop_spin()
+            self.color = "blue"
             self.start_spin(self.spin_fade_function)
         elif mode_decoded == "meson":
             #SOUNDS HERE
-            self.color = "yellow"
             self.stop_spin()
+            self.color = "yellow"
             self.start_spin(self.spin_function)
 
     def fade_off(self, mode):

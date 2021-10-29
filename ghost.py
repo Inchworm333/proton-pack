@@ -1,10 +1,11 @@
-import threading
+import multiprocessing
 import time
 import gpiozero
 import colorzero
 import pigpio
 import sys
 import signal
+from playsound import playsound
 
 #Importing other files
 from cyclotron import Cyclotron
@@ -54,7 +55,10 @@ def main():
                 if near(wand_pulse, 8):
                     #Power Up
                     print('power up')
-                    #SOUNDS HERE
+                    
+                    #sounds
+
+
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
