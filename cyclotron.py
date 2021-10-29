@@ -48,3 +48,9 @@ class Cyclotron:
         elif mode_decoded == "meson":
             self.color = "yellow"
 
+    def slime_bubble_function(self, led):
+        led.pulse(random.uniform(0.3, 1.8), 0, (0.05, random.uniform(0.73, 0.97), 0.08), (0.05, random.uniform(0.48, 0.67), 0.08))
+
+    def slime_bubble_start(self):
+        for led in self.leds:
+            slime_bubble_function(led)
