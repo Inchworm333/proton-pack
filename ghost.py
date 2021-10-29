@@ -31,15 +31,15 @@ def main():
 
         pi = pigpio.pi()
 
-        wand_PWM = proton_reader(pi, GPIO)
+        wand_PWM = proton_reader(pi, PWM_GPIO)
 
         start = time.time()
 
         global mode
 
-        while (time.time() - start) < total_time:
+        while (time.time() - start) < PWM_RUN_TIME:
             
-            time.sleep(sample_time)
+            time.sleep(PWM_SAMPLE_TIME)
 
             wand_pulse_val = wand_PWM.pulse_width()
 
