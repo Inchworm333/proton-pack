@@ -11,6 +11,7 @@ import signal
 from cyclotron import Cyclotron
 from status import FiringStatusLeds
 from wand import proton_reader
+from vent import Vent
 import helpers
 
 #SHOOTING MODE VARIABLE
@@ -25,6 +26,7 @@ def main():
     #cyclotron
     cyclotron = None
     statusleds = None
+    vent = None
 
 
     while True:
@@ -54,6 +56,7 @@ def main():
                     #SOUNDS HERE
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
+                    vent = Vent()
                     break
                 elif near(wand_pulse, 14):
                     #Power Down
@@ -61,17 +64,25 @@ def main():
                     #SOUNDS HERE
                     cyclotron.fade_off()
                     statusleds.fade_off()
+                    vent.fade_off()
+                    cyclotron = None
+                    statusleds = None
+                    vent = None
                     mode = 0
                     break
                 elif near(wand_pulse, 20):
                     #Overheat start
                     print('overheat started')
                     #SOUNDS HERE
+                    vent.overheat_pulse()
+                    vent.fade_off()
                     break
                 elif near(wand_pulse, 26):
                     #Vent Start (manual or auto)
                     print('venting started')
                     #SOUNDS HERE
+                    vent.vent()
+                    vent.idle_pulse()
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
@@ -90,11 +101,13 @@ def main():
                     #Intense Fire ON
                     print('intense fire on')
                     #SOUNDS HERE
+                    vent.heating_up()
                     break
                 elif near(wand_pulse, 50):
                     #Intense Fire OFF
                     print('Intense fire off')
                     #SOUNDS HERE
+                    vent.cooling_down()
                     break
                 elif near(wand_pulse, 56):
                     #Power Down with sound
@@ -102,6 +115,10 @@ def main():
                     #SOUNDS HERE
                     cyclotron.fade_off()
                     statusleds.fade_off()
+                    vent.fade_off()
+                    cyclotron = None
+                    statusleds = None
+                    vent = None
                     mode = 0
                     break
                 wand_pulse_val = None
