@@ -13,7 +13,7 @@ class Vent:
 
         self.colors.append(colorzero.Color('#660033'))
         self.colors.append(colorzero.Color('red'))
-        self.colors.append(colorzero.Color('r'=1, 'g'=0.27, 'b'=0))
+        self.colors.append(colorzero.Color(1,0.27,0))
         self.colors.append(colorzero.Color('yellow'))
         self.colors.append(colorzero.Color('white'))
 
@@ -26,7 +26,7 @@ class Vent:
 
     def overheat_pulse(self):
         self.col_num = 4
-        self.led.pulse(random.uniform(0.3, 0.5), random.uniform(0.3, 0.5), colorzero.Color('white'), colorzero.Color('r'=0.85, 'g'=0.85, 'b'=0.85))
+        self.led.pulse(random.uniform(0.3, 0.5), random.uniform(0.3, 0.5), colorzero.Color('white'), colorzero.Color(0.85,0.85,0.85))
 
     def fade_off(self):
         while col_num > 0:
@@ -46,7 +46,7 @@ class Vent:
                 self.led.color = self.colors[4]
 
     def cool_down(self, heating):
-        while !heating:
+        while not heating:
             if col_num > 0:
                 oldnum = col_num
                 col_num -= 1
