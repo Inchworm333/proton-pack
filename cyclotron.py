@@ -16,7 +16,7 @@ class Cyclotron:
         self.thread = None
         self.color = "red"
         self.speed = 0.85
-        self.start_spin()
+        self.start_spin(self.spin_function)
 
     def spin_function(self):
         while self.spin:
