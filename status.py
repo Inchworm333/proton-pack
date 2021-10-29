@@ -12,12 +12,14 @@ class FiringStatusLeds:
         self.leds['yellow'] = gpiozero.LED(16)
         self.leds['red'] = gpiozero.LED(15)
 
-        self.all_on()
-        self.blink('green', 0.25)
+        self.speed = 0.25
 
-    def blink(self, color, speed): 
         self.all_on()
-        self.leds[color].blink(speed, speed)
+        self.blink('green')
+
+    def blink(self, color): 
+        self.all_on()
+        self.leds[color].blink(self.speed, self.speed)
 
     def all_on(self):
         for key, value in self.leds.items():

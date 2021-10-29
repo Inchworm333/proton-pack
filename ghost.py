@@ -72,6 +72,7 @@ def main():
                     print('Mode Changed')
                     mode += 1
                     print("Mode = " + helpers.mode_decode(mode))
+                    cyclotron.mode()
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
