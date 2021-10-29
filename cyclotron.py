@@ -14,8 +14,8 @@ class Cyclotron:
         self.leds.append(gpiozero.RGBLED(9,10,11))
         
         self.thread = None
-        self.color = "purple"
-        self.speed = 0.75
+        self.color = "red"
+        self.speed = 1
         self.start_spin()
 
     def spin_function(self, color, speed):
