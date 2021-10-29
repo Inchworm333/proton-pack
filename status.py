@@ -8,9 +8,9 @@ class FiringStatusLeds:
         self.leds = {}
         self.thread = None
 
-        self.leds['green'] = gpiozero.LED(17)
-        self.leds['yellow'] = gpiozero.LED(16)
-        self.leds['red'] = gpiozero.LED(15)
+        self.leds['green'] = gpiozero.PWMLED(17)
+        self.leds['yellow'] = gpiozero.PWMLED(16)
+        self.leds['red'] = gpiozero.PWMLED(15)
 
         self.speed = 0.25
 
@@ -28,3 +28,8 @@ class FiringStatusLeds:
     def all_off(self):
         for key, value in self.leds.items():
             value.off()
+    
+    def fade_off(self):
+        for key, value in self.leds.items():
+            value.pulse(0, 3, 1)
+        self.all_off()
