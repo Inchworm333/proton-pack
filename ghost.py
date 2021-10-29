@@ -1,6 +1,5 @@
 import threading
 import time
-from enum import Enum
 import gpiozero
 import colorzero
 import pigpio
@@ -16,6 +15,7 @@ import helpers
 
 #SHOOTING MODE VARIABLE
 mode = 0
+heating = False
 
 def main():
  
@@ -38,6 +38,7 @@ def main():
         start = time.time()
 
         global mode
+        global heating
 
         while (time.time() - start) < PWM_RUN_TIME:
             
@@ -63,7 +64,7 @@ def main():
                     print('power down')
                     #SOUNDS HERE
                     if cyclotron is not None:
-                        cyclotron.fade_off()
+                        cyclotron.fade_off(mode)
                     if statusleds is not None:
                         statusleds.fade_off()
                     if vent is not None:
@@ -93,7 +94,7 @@ def main():
                     mode += 1
                     print("Mode = " + helpers.mode_decode(mode))
                     #TODO will need to edit cyclotron.py to add sound files
-                    cyclotron.mode()
+                    cyclotron.mode(mode)
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
@@ -104,20 +105,22 @@ def main():
                     #Intense Fire ON
                     print('intense fire on')
                     #SOUNDS HERE
-                    vent.heating_up()
+                    heating = True
+                    vent.heat_up(heating)
                     break
                 elif near(wand_pulse, 50):
                     #Intense Fire OFF
                     print('Intense fire off')
                     #SOUNDS HERE
-                    vent.cooling_down()
+                    heating = False
+                    vent.cool_down(heating)
                     break
                 elif near(wand_pulse, 56):
                     #Power Down with sound
                     print('power down (with sound)')
                     #SOUNDS HERE
                     if cyclotron is not None:
-                        cyclotron.fade_off()
+                        cyclotron.fade_off(mode)
                     if statusleds is not None:
                         statusleds.fade_off()
                     if vent is not None:

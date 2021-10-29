@@ -3,6 +3,7 @@ import time
 import gpiozero
 import colorzero
 import helpers
+import random
 
 class Cyclotron:
 
@@ -46,10 +47,9 @@ class Cyclotron:
         for led in self.leds:
             led.color = self.color
 
-    def mode():
-        global mode
+    def mode(self, mode):
         
-        mode_decoded = mode_decode(mode)
+        mode_decoded = helpers.mode_decode(mode)
 
         if mode_decoded == "proton":
             #SOUNDS HERE
@@ -72,12 +72,11 @@ class Cyclotron:
             self.stop_spin()
             self.start_spin(self.spin_function)
 
-    def fade_off(self):
-        global mode
+    def fade_off(self, mode):
 
-        if mode_decode(mode) != "slime":
+        if helpers.mode_decode(mode) != "slime":
             for led in self.leds:
-                if led.is_lit():
+                if led.is_lit:
                     led.pulse(0, 3, led.color, (0,0,0), 1)
                     led.off()
         else:
@@ -96,4 +95,4 @@ class Cyclotron:
 
     def slime_bubble_start(self):
         for led in self.leds:
-            slime_bubble_function(led)
+            self.slime_bubble_function(led)
