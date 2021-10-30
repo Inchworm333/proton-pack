@@ -16,14 +16,14 @@ class Cyclotron:
         
         self.spin = False
         self.thread = None
-        self.color = "red"
+        self.color = colorzero.Color("red")
         self.speed = 0.85
         self.start_spin(self.spin_function)
 
     def spin_function(self):
         while self.spin:
             for led in self.leds:
-                led.color = colorzero.Color(self.color)
+                led.color = self.color
                 time.sleep(self.speed)
                 led.off()
 
@@ -56,27 +56,28 @@ class Cyclotron:
         if mode_decoded == "proton":
             #SOUNDS HERE
             self.stop_spin()
-            self.color = "red"
+            self.color = colorzero.Color('red')
             self.start_spin(self.spin_function)
         elif mode_decoded == "slime":
             #SOUNDS HERE
             self.stop_spin()
-            self.color = "green"
+            self.color = colorzero.Color('green')
             self.slime_bubble_start()
         elif mode_decoded == "stasis":
             #SOUNDS HERE
             self.stop_spin()
-            self.color = "blue"
+            self.color = colorzero.Color('blue')
             self.start_spin(self.spin_fade_function)
         elif mode_decoded == "meson":
             #SOUNDS HERE
             self.stop_spin()
-            self.color = "yellow"
+            self.color = (1, 0.27, 0)
             self.start_spin(self.spin_function)
 
     def fade_off(self, mode):
 
         if helpers.mode_decode(mode) != "slime":
+            self.stop_spin()
             for led in self.leds:
                 if led.is_lit:
                     led.pulse(0, 3, led.color, (0,0,0), 1)
@@ -84,11 +85,13 @@ class Cyclotron:
         else:
             self.all_on()
             self.leds[0].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
-            self.leds[1].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1, True)
+            self.leds[1].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
+            time.sleep(1.5)
             self.leds[0].off()
             self.leds[1].off()
-            self.leds[2].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
-            self.leds[3].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1, True)
+            self.leds[2].pulse(0, 0.75, (0.05, 1, 0.08), (0,0,0), 1)
+            self.leds[3].pulse(0, 0.75, (0.05, 1, 0.08), (0,0,0), 1)
+            time.sleep(0.75)
             self.leds[2].off()
             self.leds[3].off()
 
