@@ -11,7 +11,7 @@ class Vent:
 
         self.colors = []
 
-        self.colors.append(colorzero.Color('#660033'))
+        self.colors.append(colorzero.Color(0.4, 0, 0.2))
         self.colors.append(colorzero.Color('red'))
         self.colors.append(colorzero.Color(1,0.27,0))
         self.colors.append(colorzero.Color('yellow'))
