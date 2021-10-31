@@ -1,16 +1,17 @@
-import multiprocessing
 import time
 import gpiozero
 import colorzero
 import pigpio
 import sys
 import signal
+from sound_player import Sound, Playlist, SoundPlayer
 
 #Importing other files
 from cyclotron import Cyclotron
 from status import FiringStatusLeds
 from wand import proton_reader
 from vent import Vent
+from background import Background
 import helpers
 
 #SHOOTING MODE VARIABLE
@@ -27,6 +28,8 @@ def main():
     cyclotron = None
     statusleds = None
     vent = None
+    background = None
+    last = 'power down'
 
 
     while True:
@@ -54,15 +57,24 @@ def main():
                 if near(wand_pulse, 8):
                     #Power Up
                     print('power up')
-                    #SOUNDS HERE
+                    sound = Sound("../sounds/protongun_powerup.wav")
+                    sound.play()
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
+                    time.sleep(3)
+                    bgsound = Background()
+                    last = 'power up'
                     break
                 elif near(wand_pulse, 14):
                     #Power Down
                     print('power down')
                     #SOUNDS HERE
+                    if last != 'power down':
+                        sound = Sound("../sounds/power_down_2.wav")
+                        sound.play()
+                        time.sleep(0.5)
+                        bgsound.stopbg()
                     if cyclotron is not None:
                         cyclotron.fade_off(mode)
                     if statusleds is not None:
@@ -73,6 +85,7 @@ def main():
                     statusleds = None
                     vent = None
                     mode = 0
+                    last = 'power down'
                     break
                 elif near(wand_pulse, 20):
                     #Overheat start
@@ -80,6 +93,7 @@ def main():
                     #SOUNDS HERE
                     vent.overheat_pulse()
                     vent.fade_off()
+                    last = 'overheat started'
                     break
                 elif near(wand_pulse, 26):
                     #Vent Start (manual or auto)
@@ -87,6 +101,7 @@ def main():
                     #SOUNDS HERE
                     vent.vent()
                     vent.idle_pulse()
+                    last = 'venting started'
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
@@ -95,11 +110,13 @@ def main():
                     print("Mode = " + helpers.mode_decode(mode))
                     #TODO will need to edit cyclotron.py to add sound files
                     cyclotron.mode(mode)
+                    last = 'mode change'
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
                     print('playing song')
                     #SONGS HERE
+                    last = 'playing song'
                     break
                 elif near(wand_pulse, 44):
                     #Intense Fire ON
@@ -107,6 +124,7 @@ def main():
                     #SOUNDS HERE
                     heating = True
                     vent.heat_up(heating)
+                    last = 'intense fire on'
                     break
                 elif near(wand_pulse, 50):
                     #Intense Fire OFF
@@ -114,11 +132,16 @@ def main():
                     #SOUNDS HERE
                     heating = False
                     vent.cool_down(heating)
+                    last = 'intense fire off'
                     break
                 elif near(wand_pulse, 56):
                     #Power Down with sound
                     print('power down (with sound)')
                     #SOUNDS HERE
+                    if last != 'power down':
+                        bgsound.stopbg()
+                        sound = Sound("../sounds/power_down_2.wav")
+                        sound.play()
                     if cyclotron is not None:
                         cyclotron.fade_off(mode)
                     if statusleds is not None:
@@ -129,6 +152,7 @@ def main():
                     statusleds = None
                     vent = None
                     mode = 0
+                    last = 'power down'
                     break
                 wand_pulse_val = None
             else:
