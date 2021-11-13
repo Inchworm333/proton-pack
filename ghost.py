@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import time
 import gpiozero
 import colorzero
@@ -13,6 +14,9 @@ from wand import proton_reader
 from vent import Vent
 from background import Background
 import helpers
+
+sound = Sound("../sounds/spark6.wav")
+sound.play()
 
 #SHOOTING MODE VARIABLE
 mode = 0
