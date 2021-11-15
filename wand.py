@@ -28,7 +28,7 @@ class proton_reader:
                 self._end_tick = tick
 
     def pulse_width(self):
-        if self._start_tick is not None:
+        if self._start_tick is not None and self._end_tick is not None:
             endval = self._end_tick - self._start_tick
             self._end_tick = None
             self._start_tick = None
