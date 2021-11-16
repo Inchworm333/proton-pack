@@ -6,6 +6,7 @@ import pigpio
 import sys
 import signal
 from sound_player import Sound, Playlist, SoundPlayer
+import daemon
 
 #Importing other files
 from cyclotron import Cyclotron
@@ -15,12 +16,17 @@ from vent import Vent
 from background import Background
 import helpers
 
-sound = Sound("../sounds/spark6.wav")
+sound = Sound("/root/sounds/spark6.wav")
 sound.play()
 
 #SHOOTING MODE VARIABLE
 mode = 0
 heating = False
+wand_pulse_val = None
+
+# Error file output
+errorLog = "/root/ghostLogs/ghostError.log"
+generalError = open("/root/ghostLogs/generalError.log", "w+")
 
 def main():
  
@@ -35,6 +41,12 @@ def main():
     background = None
     last = 'power down'
 
+    debug = False
+    print(sys.argv)
+    if len(sys.argv) > 1:
+        debug = True
+        print("debugging mode on")
+
 
     while True:
 
@@ -46,6 +58,7 @@ def main():
 
         global mode
         global heating
+        global wand_pulse_val
 
         while (time.time() - start) < PWM_RUN_TIME:
             
@@ -55,13 +68,15 @@ def main():
 
             if(wand_pulse_val is not None):
                 wand_pulse = wand_pulse_val // 1000
-
-                print(wand_pulse)
+                
+                if debug:
+                    print(wand_pulse)
 
                 if near(wand_pulse, 8):
                     #Power Up
-                    print('power up')
-                    sound = Sound("../sounds/protongun_powerup.wav")
+                    if debug:
+                        print('power up')
+                    sound = Sound("/root/sounds/protongun_powerup.wav")
                     sound.play()
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
@@ -72,10 +87,11 @@ def main():
                     break
                 elif near(wand_pulse, 14):
                     #Power Down
-                    print('power down')
+                    if debug:
+                        print('power down')
                     #SOUNDS HERE
                     if last != 'power down':
-                        sound = Sound("../sounds/power_down_2.wav")
+                        sound = Sound("/root/sounds/power_down_2.wav")
                         sound.play()
                         time.sleep(0.5)
                         bgsound.stopbg()
@@ -93,7 +109,8 @@ def main():
                     break
                 elif near(wand_pulse, 20):
                     #Overheat start
-                    print('overheat started')
+                    if debug:
+                        print('overheat started')
                     #SOUNDS HERE
                     vent.overheat_pulse()
                     vent.fade_off()
@@ -101,7 +118,8 @@ def main():
                     break
                 elif near(wand_pulse, 26):
                     #Vent Start (manual or auto)
-                    print('venting started')
+                    if debug:
+                        print('venting started')
                     #SOUNDS HERE
                     vent.vent()
                     vent.idle_pulse()
@@ -109,22 +127,26 @@ def main():
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
-                    print('Mode Changed')
+                    if debug:
+                        print('Mode Changed')
                     mode += 1
-                    print("Mode = " + helpers.mode_decode(mode))
+                    if debug:
+                        print("Mode = " + helpers.mode_decode(mode))
                     #TODO will need to edit cyclotron.py to add sound files
                     cyclotron.mode(mode)
                     last = 'mode change'
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
-                    print('playing song')
+                    if debug:
+                        print('playing song')
                     #SONGS HERE
                     last = 'playing song'
                     break
                 elif near(wand_pulse, 44):
                     #Intense Fire ON
-                    print('intense fire on')
+                    if debug:
+                        print('intense fire on')
                     #SOUNDS HERE
                     heating = True
                     vent.heat_up(heating)
@@ -132,7 +154,8 @@ def main():
                     break
                 elif near(wand_pulse, 50):
                     #Intense Fire OFF
-                    print('Intense fire off')
+                    if debug:
+                        print('Intense fire off')
                     #SOUNDS HERE
                     heating = False
                     vent.cool_down(heating)
@@ -140,11 +163,12 @@ def main():
                     break
                 elif near(wand_pulse, 56):
                     #Power Down with sound
-                    print('power down (with sound)')
+                    if debug:
+                        print('power down (with sound)')
                     #SOUNDS HERE
                     if last != 'power down':
                         bgsound.stopbg()
-                        sound = Sound("../sounds/power_down_2.wav")
+                        sound = Sound("/root/sounds/power_down_2.wav")
                         sound.play()
                     if cyclotron is not None:
                         cyclotron.fade_off(mode)
@@ -160,11 +184,24 @@ def main():
                     break
                 wand_pulse_val = None
             else:
-                print('wand_pulse_val is None')
+                if debug:
+                    print('wand_pulse_val is None')
 
 def near(number, ideal):
     return abs(number - ideal) <= 3
 
-main()
-
+try:
+    main()
+except Exception as exception:
+    exFile = open(errorLog, "a")
+    if wand_pulse_val is not None:
+        exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
+    else:
+        exFile.write("wand_pulse_val is None")
+    exFile.write("mode: " + str(mode) + "\r\n")
+    exFile.write("heating: " + str(heating) + "\r\n")
+    exFile.write("error: \r\n" + str(exception) + "\r\n")
+    exFile.close()
+    sound = Sound("/root/sounds/proton_trap_full.wav")
+    sound.play()
 
