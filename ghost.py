@@ -13,6 +13,7 @@ from cyclotron import Cyclotron
 from status import FiringStatusLeds
 from wand import proton_reader
 from vent import Vent
+from shooting import Shooting
 from background import Background
 import helpers
 
@@ -37,10 +38,10 @@ def main():
     PWM_RUN_TIME = 60.0
     PWM_SAMPLE_TIME = 2.0
 
-    #cyclotron
     cyclotron = None
     statusleds = None
     vent = None
+    shooting = None
     background = None
     last = 'power down'
 
@@ -89,6 +90,7 @@ def main():
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
+                    shooting = Shooting(None, None, None)
 
                     time.sleep(3)
                     bgsound = Background()
