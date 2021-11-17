@@ -5,7 +5,7 @@ from sound_player import Sound, Playlist, SoundPlayer
 class Background:
 
     def __init__(self):
-        self.sound = Sound("../sounds/protongun_amb_hum_loop.wav")
+        self.sound = Sound("sounds/protongun_amb_hum_loop.wav")
         self.thread = None
         self.sound.set_loop(0)
         self.playbg()

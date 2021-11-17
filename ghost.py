@@ -16,17 +16,20 @@ from vent import Vent
 from background import Background
 import helpers
 
-sound = Sound("/root/sounds/spark6.wav")
+sound = Sound("sounds/spark6.wav")
 sound.play()
 
-#SHOOTING MODE VARIABLE
+#VARIABLES
+packOn = False
 mode = 0
 heating = False
 wand_pulse_val = None
+firingMode = gpiozero.Button(22)
+shootingButton = gpiozero.Button(27)
 
 # Error file output
-errorLog = "/root/ghostLogs/ghostError.log"
-generalError = open("/root/ghostLogs/generalError.log", "w+")
+errorLog = "../ghostLogs/ghostError.log"
+generalError = open("../ghostLogs/generalError.log", "w+")
 
 def main():
  
@@ -56,9 +59,12 @@ def main():
 
         start = time.time()
 
+        global packOn
         global mode
         global heating
         global wand_pulse_val
+        global firingMode
+        global shootingButton
 
         while (time.time() - start) < PWM_RUN_TIME:
             
@@ -76,13 +82,18 @@ def main():
                     #Power Up
                     if debug:
                         print('power up')
-                    sound = Sound("/root/sounds/protongun_powerup.wav")
+
+                    sound = Sound("sounds/protongun_powerup.wav")
                     sound.play()
+
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
+
                     time.sleep(3)
                     bgsound = Background()
+
+                    packOn = True
                     last = 'power up'
                     break
                 elif near(wand_pulse, 14):
@@ -91,19 +102,23 @@ def main():
                         print('power down')
                     #SOUNDS HERE
                     if last != 'power down':
-                        sound = Sound("/root/sounds/power_down_2.wav")
+                        sound = Sound("sounds/power_down_2.wav")
                         sound.play()
                         time.sleep(0.5)
                         bgsound.stopbg()
+
                     if cyclotron is not None:
                         cyclotron.fade_off(mode)
                     if statusleds is not None:
                         statusleds.fade_off()
                     if vent is not None:
                         vent.fade_off()
+
                     cyclotron = None
                     statusleds = None
                     vent = None
+
+                    powerOn = False
                     mode = 0
                     last = 'power down'
                     break
@@ -167,18 +182,23 @@ def main():
                         print('power down (with sound)')
                     #SOUNDS HERE
                     if last != 'power down':
-                        bgsound.stopbg()
-                        sound = Sound("/root/sounds/power_down_2.wav")
+                        sound = Sound("sounds/power_down_2.wav")
                         sound.play()
+                        time.sleep(0.5)
+                        bgsound.stopbg()
+
                     if cyclotron is not None:
                         cyclotron.fade_off(mode)
                     if statusleds is not None:
                         statusleds.fade_off()
                     if vent is not None:
                         vent.fade_off()
+
                     cyclotron = None
                     statusleds = None
                     vent = None
+
+                    powerOn = False
                     mode = 0
                     last = 'power down'
                     break
@@ -194,14 +214,16 @@ try:
     main()
 except Exception as exception:
     exFile = open(errorLog, "a")
+
     if wand_pulse_val is not None:
         exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
     else:
-        exFile.write("wand_pulse_val is None")
+        exFile.write("wand_pulse_val is None\r\n")
     exFile.write("mode: " + str(mode) + "\r\n")
     exFile.write("heating: " + str(heating) + "\r\n")
     exFile.write("error: \r\n" + str(exception) + "\r\n")
     exFile.close()
-    sound = Sound("/root/sounds/proton_trap_full.wav")
+
+    sound = Sound("sounds/proton_trap_full.wav")
     sound.play()
 
