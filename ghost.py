@@ -88,7 +88,7 @@ def main():
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
-                    shooting = Shooting(None, None, None)
+                    shooting = Shooting(None, None, None, None)
 
                     time.sleep(3)
                     bgsound = Background()
@@ -100,7 +100,6 @@ def main():
                     #Power Down
                     if debug:
                         print('power down')
-                    #SOUNDS HERE
                     if last != 'power down':
                         sound = Sound("sounds/power_down_2.wav")
                         sound.play()
@@ -143,6 +142,8 @@ def main():
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
+                    sound = Sound("sounds/proton_pack_rail_open.wav")
+                    sound.play()
                     if debug:
                         print('Mode Changed')
                     mode += 1

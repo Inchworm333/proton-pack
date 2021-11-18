@@ -34,6 +34,13 @@ class Cyclotron:
                 time.sleep(self.speed)
                 led.off()
 
+    def spin_fade_out_function(self):
+        while self.spin:
+            for led in self.leds:
+                led.pulse(0, self.speed, colorzero.Color(self.color))
+                time.sleep(self.speed)
+                led.off()
+
     def start_spin(self, spin_func):
         self.spin = True
         self.thread = threading.Thread(target=spin_func)
@@ -72,7 +79,7 @@ class Cyclotron:
             #SOUNDS HERE
             self.stop_spin()
             self.color = (1, 0.27, 0)
-            self.start_spin(self.spin_function)
+            self.start_spin(self.spin_fade_out_function)
 
     def fade_off(self, mode):
 

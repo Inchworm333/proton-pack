@@ -17,7 +17,6 @@ class FiringStatusLeds:
         self.blink('green')
 
     def blink(self, color): 
-        self.all_on()
         self.leds[color].blink(self.speed, self.speed)
 
     def all_on(self):
@@ -32,3 +31,4 @@ class FiringStatusLeds:
         for key, value in self.leds.items():
             value.pulse(0, 3, 1)
         self.all_off()
+
