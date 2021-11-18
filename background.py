@@ -19,4 +19,6 @@ class Background:
         self.sound.stop()
 
     def playbg_function(self):
-        self.sound.play()
+        #self.sound.play()
+        None
+

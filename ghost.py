@@ -25,8 +25,7 @@ packOn = False
 mode = 0
 heating = False
 wand_pulse_val = None
-firingMode = gpiozero.Button(22)
-shootingButton = gpiozero.Button(27)
+debug = False
 
 # Error file output
 errorLog = "../ghostLogs/ghostError.log"
@@ -45,8 +44,7 @@ def main():
     background = None
     last = 'power down'
 
-    debug = False
-    print(sys.argv)
+    global debug
     if len(sys.argv) > 1:
         debug = True
         print("debugging mode on")
@@ -109,16 +107,17 @@ def main():
                         time.sleep(0.5)
                         bgsound.stopbg()
 
-                    if cyclotron is not None:
-                        cyclotron.fade_off(mode)
-                    if statusleds is not None:
-                        statusleds.fade_off()
-                    if vent is not None:
-                        vent.fade_off()
+                        if cyclotron is not None:
+                            cyclotron.fade_off(mode)
+                        if statusleds is not None:
+                            statusleds.fade_off()
+                            statusleds.all_off()
+                            statusleds.blink("yellow")
+                        if vent is not None:
+                            vent.fade_off()
 
-                    cyclotron = None
-                    statusleds = None
-                    vent = None
+                        cyclotron = None
+                        vent = None
 
                     powerOn = False
                     mode = 0
@@ -189,16 +188,18 @@ def main():
                         time.sleep(0.5)
                         bgsound.stopbg()
 
-                    if cyclotron is not None:
-                        cyclotron.fade_off(mode)
-                    if statusleds is not None:
-                        statusleds.fade_off()
-                    if vent is not None:
-                        vent.fade_off()
+                        if cyclotron is not None:
+                            cyclotron.fade_off(mode)
+                        if statusleds is not None:
+                            statusleds.fade_off()
+                            statusleds.all_off()
+                            statusleds.blink("yellow")
+                        if vent is not None:
+                            vent.fade_off()
 
-                    cyclotron = None
-                    statusleds = None
-                    vent = None
+                        cyclotron = None
+                        statusleds = None
+                        vent = None
 
                     powerOn = False
                     mode = 0
@@ -216,6 +217,9 @@ try:
     main()
 except Exception as exception:
     exFile = open(errorLog, "a")
+
+    if debug:
+        print(exception)
 
     if wand_pulse_val is not None:
         exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
