@@ -1,17 +1,15 @@
 import time
 import threading
 #from sound_player import Sound, Playlist, SoundPlayer
-from pygame.mixer import Sound
+from pygame import mixer
 
 mixer.init(buffer=512)
-mixer.music.play(-1)
 
 class Background:
 
     def __init__(self):
-        self.sound = Sound("sounds/protongun_amb_hum_loop.wav")
+        self.sound = mixer.Sound("sounds/protongun_amb_hum_loop.wav")
         self.thread = None
-        self.sound.set_loop(0)
         self.playbg()
 
 
@@ -23,5 +21,5 @@ class Background:
         self.sound.stop()
 
     def playbg_function(self):
-        self.sound.play()
+        self.sound.play(-1)
 

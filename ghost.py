@@ -6,7 +6,7 @@ import pigpio
 import sys
 import signal
 #from sound_player import Sound, Playlist, SoundPlayer
-from pygame.mixer import Sound
+from pygame import mixer
 import daemon
 
 #Importing other files
@@ -19,7 +19,7 @@ from background import Background
 import helpers
 
 mixer.init(buffer=512)
-sound = Sound("sounds/spark6.wav")
+sound = mixer.Sound("sounds/spark6.wav")
 sound.play()
 
 #VARIABLES
@@ -84,7 +84,7 @@ def main():
                     if debug:
                         print('power up')
 
-                    sound = Sound("sounds/protongun_powerup.wav")
+                    sound = mixer.Sound("sounds/protongun_powerup.wav")
                     sound.play()
 
                     cyclotron = Cyclotron()
@@ -103,7 +103,7 @@ def main():
                     if debug:
                         print('power down')
                     if last != 'power down':
-                        sound = Sound("sounds/power_down_2.wav")
+                        sound = mixer.Sound("sounds/power_down_2.wav")
                         sound.play()
                         time.sleep(0.5)
                         bgsound.stopbg()
@@ -144,7 +144,7 @@ def main():
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
-                    sound = Sound("sounds/proton_pack_rail_open.wav")
+                    sound = mixer.Sound("sounds/proton_pack_rail_open.wav")
                     sound.play()
                     if debug:
                         print('Mode Changed')
@@ -186,7 +186,7 @@ def main():
                         print('power down (with sound)')
                     #SOUNDS HERE
                     if last != 'power down':
-                        sound = Sound("sounds/power_down_2.wav")
+                        sound = mixer.Sound("sounds/power_down_2.wav")
                         sound.play()
                         time.sleep(0.5)
                         bgsound.stopbg()
@@ -230,9 +230,10 @@ except Exception as exception:
         exFile.write("wand_pulse_val is None\r\n")
     exFile.write("mode: " + str(mode) + "\r\n")
     exFile.write("heating: " + str(heating) + "\r\n")
+    exFile.write("Threads: " + str(threading.active_count()) + "\r\n")
     exFile.write("error: \r\n" + str(exception) + "\r\n")
     exFile.close()
 
-    sound = Sound("sounds/proton_trap_full.wav")
+    sound = mixer.Sound("sounds/proton_trap_full.wav")
     sound.play()
 

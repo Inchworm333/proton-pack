@@ -3,7 +3,7 @@ import time
 import gpiozero
 import colorzero
 #from sound_player import Sound, Playlist, SoundPlayer
-from pygame.mixer import Sound
+from pygame import mixer 
 import helpers
 import random
 
@@ -21,13 +21,12 @@ class Shooting:
         self.thread_armed = None
         self.thread_disarmed = None
 
-        self.armed_sound = Sound("sounds/ai_protongun_powerup.wav")
-        self.disarmed_sound = Sound("sounds/protongun_shutdown.wav")
+        self.armed_sound = mixer.Sound("sounds/ai_protongun_powerup.wav")
+        self.disarmed_sound = mixer.Sound("sounds/protongun_shutdown.wav")
 
-        self.firing_start_sound = Sound("sounds/protongun_turbo_head.wav")
-        self.firing_stop_sound = Sound("sounds/protongun_turbo_tail.wav")
-        self.firing_loop_sound = Sound("sounds/protongun_turbo_loop.wav")
-        self.firing_loop_sound.set_loop(0)
+        self.firing_start_sound = mixer.Sound("sounds/protongun_turbo_head.wav")
+        self.firing_stop_sound = mixer.Sound("sounds/protongun_turbo_tail.wav")
+        self.firing_loop_sound = mixer.Sound("sounds/protongun_turbo_loop.wav")
 
         self.firing_mode = gpiozero.Button(22, False)
 
