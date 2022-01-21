@@ -5,7 +5,8 @@ import colorzero
 import pigpio
 import sys
 import signal
-from sound_player import Sound, Playlist, SoundPlayer
+#from sound_player import Sound, Playlist, SoundPlayer
+from pygame.mixer import Sound
 import daemon
 
 #Importing other files
@@ -17,6 +18,7 @@ from shooting import Shooting
 from background import Background
 import helpers
 
+mixer.init(buffer=512)
 sound = Sound("sounds/spark6.wav")
 sound.play()
 

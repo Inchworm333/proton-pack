@@ -2,9 +2,12 @@ import threading
 import time
 import gpiozero
 import colorzero
-from sound_player import Sound, Playlist, SoundPlayer
+#from sound_player import Sound, Playlist, SoundPlayer
+from pygame.mixer import Sound
 import helpers
 import random
+
+mixer.init(buffer=512)
 
 
 class Shooting:

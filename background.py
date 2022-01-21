@@ -1,6 +1,9 @@
 import time
 import threading
-from sound_player import Sound, Playlist, SoundPlayer
+#from sound_player import Sound, Playlist, SoundPlayer
+from pygame.mixer import Sound
+
+mixer.init(buffer=512)
 
 class Background:
 
