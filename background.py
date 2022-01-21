@@ -4,6 +4,7 @@ import threading
 from pygame.mixer import Sound
 
 mixer.init(buffer=512)
+mixer.music.play(-1)
 
 class Background:
 
