@@ -5,7 +5,6 @@ import colorzero
 import pigpio
 import sys
 import signal
-#from sound_player import Sound, Playlist, SoundPlayer
 from pygame import mixer
 import daemon
 
@@ -28,6 +27,7 @@ mode = 0
 heating = False
 wand_pulse_val = None
 debug = False
+songPlaying = False
 
 # Error file output
 errorLog = "../ghostLogs/ghostError.log"
@@ -66,6 +66,7 @@ def main():
         global wand_pulse_val
         global firingMode
         global shootingButton
+        global songPlaying
 
         while (time.time() - start) < PWM_RUN_TIME:
             
@@ -119,6 +120,7 @@ def main():
 
                         cyclotron = None
                         vent = None
+                        shooting = None
 
                     powerOn = False
                     mode = 0
@@ -129,6 +131,8 @@ def main():
                     if debug:
                         print('overheat started')
                     #SOUNDS HERE
+                    sound = mixer.Sound("sounds/protonpack_overheat_beep.wav")
+                    sound.play()
                     vent.overheat_pulse()
                     vent.fade_off()
                     last = 'overheat started'
@@ -159,7 +163,15 @@ def main():
                     #Song Request
                     if debug:
                         print('playing song')
-                    #SONGS HERE
+                    if (songPlaying is False):
+                        bgsound.stopbg()
+                        songPlaying = mixer.Sound("sounds/theme_song.wav")
+                        songPlaying.set_volume(0.75)
+                        songPlaying.play()
+                    else:
+                        songPlaying.stop()
+                        songPlaying = False
+                        bgsound.playbg()
                     last = 'playing song'
                     break
                 elif near(wand_pulse, 44):
@@ -216,24 +228,26 @@ def main():
 def near(number, ideal):
     return abs(number - ideal) <= 3
 
-try:
-    main()
-except Exception as exception:
-    exFile = open(errorLog, "a")
-
-    if debug:
-        print(exception)
-
-    if wand_pulse_val is not None:
-        exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
-    else:
-        exFile.write("wand_pulse_val is None\r\n")
-    exFile.write("mode: " + str(mode) + "\r\n")
-    exFile.write("heating: " + str(heating) + "\r\n")
-    exFile.write("Threads: " + str(threading.active_count()) + "\r\n")
-    exFile.write("error: \r\n" + str(exception) + "\r\n")
-    exFile.close()
-
-    sound = mixer.Sound("sounds/proton_trap_full.wav")
-    sound.play()
+main()
+#try:
+#    main()
+#except Exception as exception:
+#    exFile = open(errorLog, "a")
+#
+#    if debug:
+#        print(exception)
+#
+#    if wand_pulse_val is not None:
+#        exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
+#    else:
+#        exFile.write("wand_pulse_val is None\r\n")
+#    exFile.write("mode: " + str(mode) + "\r\n")
+#    exFile.write("heating: " + str(heating) + "\r\n")
+#    exFile.write("last: " + str(last) + "\r\n")
+#    exFile.write("Threads: " + str(threading.active_count()) + "\r\n")
+#    exFile.write("error: \r\n" + str(exception) + "\r\n")
+#    exFile.close()
+#
+#    sound = mixer.Sound("sounds/proton_trap_full.wav")
+#    sound.play()
 
