@@ -91,7 +91,7 @@ def main():
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
-                    shooting = Shooting(None, None, None, None)
+                    shooting = Shooting(None, None, None)
 
                     time.sleep(3)
                     bgsound = Background()
@@ -120,7 +120,6 @@ def main():
 
                         cyclotron = None
                         vent = None
-                        shooting = None
 
                     powerOn = False
                     mode = 0
@@ -157,6 +156,7 @@ def main():
                         print("Mode = " + helpers.mode_decode(mode))
                     #TODO will need to edit cyclotron.py to add sound files
                     cyclotron.mode(mode)
+                    shooting.mode(mode)
                     last = 'mode change'
                     break
                 elif near(wand_pulse, 38):
