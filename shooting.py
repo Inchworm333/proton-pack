@@ -59,14 +59,15 @@ class Shooting:
 
     def startStopFire(self):
         while True:
-            self.fire_button.wait_for_press()
-            self.firing_start_sound.play()
-            time.sleep(self.firing_start_sound.get_length - 0.25)
-            self.firing_loop_sound.play(-1)
+            if (self.can_fire is True):
+                self.fire_button.wait_for_press()
+                self.firing_start_sound.play()
+                time.sleep(self.firing_start_sound.get_length() - 0.25)
+                self.firing_loop_sound.play(-1)
 
-            self.fire_button.wait_for_release()
-            self.firing_loop_sound.stop()
-            self.firing_stop_sound.play()
+                self.fire_button.wait_for_release()
+                self.firing_loop_sound.stop()
+                self.firing_stop_sound.play()
 
     #def startFiring(self):
     #    if (self.can_fire):
