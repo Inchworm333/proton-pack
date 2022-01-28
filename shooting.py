@@ -26,11 +26,11 @@ class Shooting:
         self.firing_stop_sound = mixer.Sound("sounds/protongun_turbo_tail.wav")
         self.firing_loop_sound = mixer.Sound("sounds/protongun_turbo_loop.wav")
 
-        self.firing_mode = gpiozero.Button(22, False)
+        self.firing_mode = gpiozero.Button(22, None, False)
 
         self.can_fire = self.firing_mode.is_pressed
 
-        self.fire_button = gpiozero.Button(27, False)
+        self.fire_button = gpiozero.Button(27, None, False)
         #self.fire_button.hold_time = 0.05
 
         #self.fire_button.when_held = self.startFiring
