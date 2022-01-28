@@ -120,6 +120,7 @@ def main():
 
                         cyclotron = None
                         vent = None
+                        shooting.kill_all()
 
                     powerOn = False
                     mode = 0
@@ -215,6 +216,7 @@ def main():
                         cyclotron = None
                         statusleds = None
                         vent = None
+                        shooting.kill_all()
 
                     powerOn = False
                     mode = 0
