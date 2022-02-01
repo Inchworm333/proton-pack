@@ -43,17 +43,6 @@ class Shooting:
         self.thread_armDisarmed.start()
         self.thread_startStopFire.start()
 
-    def stop_fire(self):
-        self.thread_startStopFire._shutdown()
-
-    def start_fire(self):
-        self.thread_startStopFire.__init__()
-
-
-    def killall(self):
-        self.thread_armDisarmed._shutdown()
-        self.thread_startStopFire._shutdown()
-
     #def arm(self):
     #    print("arm")
     #    if (self.can_fire is False):
