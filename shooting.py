@@ -11,12 +11,13 @@ mixer.init(buffer=512)
 
 class Shooting:
 
-    def __init__(self, spin_speed, heating, status):
-        self.spin_speed = spin_speed
-        self.heating = heating
-        self.status = status
+    def __init__(self):
+        #self.spin_speed = spin_speed
+        #self.heating = heating
+        #self.status = status
 
         self.thread_armDisarmed = None
+        self.thread_startStopFire = None
 
         self.armed_sound = mixer.Sound("sounds/ai_protongun_powerup.wav")
         self.disarmed_sound = mixer.Sound("sounds/protongun_shutdown.wav")
@@ -25,21 +26,36 @@ class Shooting:
         self.firing_stop_sound = mixer.Sound("sounds/protongun_turbo_tail.wav")
         self.firing_loop_sound = mixer.Sound("sounds/protongun_turbo_loop.wav")
 
-        self.firing_mode = gpiozero.Button(22, False)
+        self.firing_mode = gpiozero.Button(22, pull_up=False)
 
-        self.can_fire = self.firing_mode.is_pressed
+        self.can_fire = False
 
-        self.fire_button = gpiozero.Button(27, False)
+
+        self.fire_button = gpiozero.Button(27, pull_up=False)
         self.fire_button.hold_time = 0.05
 
-        self.fire_button.when_held = self.startFiring
-        self.fire_button.when_released = self.stopFiring
 
         self.firing_listeners()
 
     def firing_listeners(self):
         self.thread_armDisarmed = threading.Thread(target=self.armDisarm)
+        self.thread_startStopFire = threading.Thread(target=self.startStopFire)
         self.thread_armDisarmed.start()
+        self.thread_startStopFire.start()
+
+    #def arm(self):
+    #    print("arm")
+    #    if (self.can_fire is False):
+    #        self.armed_sound.play()
+    #        print("true")
+    #        self.can_fire = True
+
+    #def disarm(self):
+    #    print("disarm")
+    #    if (self.can_fire is True):
+    #        self.disarmed_sound.play()
+    #        print("false")
+    #        self.can_fire = False
 
     def armDisarm(self):
         while True:
@@ -47,23 +63,41 @@ class Shooting:
                 self.firing_mode.wait_for_press()
                 self.armed_sound.play()
                 print("true")
+                self.start_fire()
                 self.can_fire = True
             if (self.can_fire):
                 self.firing_mode.wait_for_release()
                 self.disarmed_sound.play()
                 print("false")
                 self.can_fire = False
+                self.stop_fire()
 
-    def startFiring(self):
-        if (self.can_fire):
-            self.firing_start_sound.play()
-            time.sleep(self.firing_start_sound.get_length() - 0.25)
-            self.firing_loop_sound.play(-1)
+    def startStopFire(self):
+        while True:
+            if (self.can_fire is True):
+                self.fire_button.wait_for_press()
+                self.firing_start_sound.play()
+                time.sleep(self.firing_start_sound.get_length() - 0.25)
+                self.firing_loop_sound.play(-1)
 
-    def stopFiring(self):
-        if (self.can_fire):
-            self.firing_loop_sound.stop()
-            self.firing_stop_sound.play()
+                self.fire_button.wait_for_release()
+                self.firing_loop_sound.stop()
+                self.firing_stop_sound.play()
+            if (self.can_fire is False):
+                self.firing_loop_sound.stop()
+                self.firing_stop_sound.stop()
+                self.firing_start_sound.stop()
+
+    #def startFiring(self):
+    #    if (self.can_fire):
+    #        self.firing_start_sound.play()
+    #        time.sleep(self.firing_start_sound.get_length() - 0.25)
+    #        self.firing_loop_sound.play(-1)
+
+    #def stopFiring(self):
+    #    if (self.can_fire):
+    #        self.firing_loop_sound.stop()
+    #        self.firing_stop_sound.play()
 
     def mode(self, mode):
         

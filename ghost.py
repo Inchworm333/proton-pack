@@ -91,7 +91,7 @@ def main():
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
-                    shooting = Shooting(None, None, None)
+                    shooting = Shooting()
 
                     time.sleep(3)
                     bgsound = Background()
@@ -120,6 +120,7 @@ def main():
 
                         cyclotron = None
                         vent = None
+                        shooting.kill_all()
 
                     powerOn = False
                     mode = 0
@@ -215,6 +216,7 @@ def main():
                         cyclotron = None
                         statusleds = None
                         vent = None
+                        shooting.kill_all()
 
                     powerOn = False
                     mode = 0
