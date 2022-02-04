@@ -6,7 +6,6 @@ import pigpio
 import sys
 import signal
 from pygame import mixer
-import daemon
 
 #Importing other files
 from cyclotron import Cyclotron
@@ -231,25 +230,25 @@ def near(number, ideal):
     return abs(number - ideal) <= 3
 
 main()
-#try:
-#    main()
-#except Exception as exception:
-#    exFile = open(errorLog, "a")
-#
-#    if debug:
-#        print(exception)
-#
-#    if wand_pulse_val is not None:
-#        exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
-#    else:
-#        exFile.write("wand_pulse_val is None\r\n")
-#    exFile.write("mode: " + str(mode) + "\r\n")
-#    exFile.write("heating: " + str(heating) + "\r\n")
-#    exFile.write("last: " + str(last) + "\r\n")
-#    exFile.write("Threads: " + str(threading.active_count()) + "\r\n")
-#    exFile.write("error: \r\n" + str(exception) + "\r\n")
-#    exFile.close()
-#
-#    sound = mixer.Sound("sounds/proton_trap_full.wav")
-#    sound.play()
+try:
+    main()
+except Exception as exception:
+    exFile = open(errorLog, "a")
+
+    if debug:
+        print(exception)
+
+    if wand_pulse_val is not None:
+        exFile.write("wand_pulse: " + str(wand_pulse_val // 1000) + "\r\n")
+    else:
+        exFile.write("wand_pulse_val is None\r\n")
+    exFile.write("mode: " + str(mode) + "\r\n")
+    exFile.write("heating: " + str(heating) + "\r\n")
+    exFile.write("last: " + str(last) + "\r\n")
+    exFile.write("Threads: " + str(threading.active_count()) + "\r\n")
+    exFile.write("error: \r\n" + str(exception) + "\r\n")
+    exFile.close()
+
+    sound = mixer.Sound("sounds/proton_trap_full.wav")
+    sound.play()
 
