@@ -43,20 +43,6 @@ class Shooting:
         self.thread_armDisarmed.start()
         self.thread_startStopFire.start()
 
-    #def arm(self):
-    #    print("arm")
-    #    if (self.can_fire is False):
-    #        self.armed_sound.play()
-    #        print("true")
-    #        self.can_fire = True
-
-    #def disarm(self):
-    #    print("disarm")
-    #    if (self.can_fire is True):
-    #        self.disarmed_sound.play()
-    #        print("false")
-    #        self.can_fire = False
-
     def armDisarm(self):
         while True:
             if (self.can_fire is False):
@@ -88,16 +74,14 @@ class Shooting:
                 self.firing_stop_sound.stop()
                 self.firing_start_sound.stop()
 
-    #def startFiring(self):
-    #    if (self.can_fire):
-    #        self.firing_start_sound.play()
-    #        time.sleep(self.firing_start_sound.get_length() - 0.25)
-    #        self.firing_loop_sound.play(-1)
+    def killAll(self):
+        self.firing_mode.close()
+        self.fire_button.close()
 
-    #def stopFiring(self):
-    #    if (self.can_fire):
-    #        self.firing_loop_sound.stop()
-    #        self.firing_stop_sound.play()
+        self.firing_loop_sound.stop()
+        self.firing_stop_sound.stop()
+        self.firing_start_sound.stop()
+
 
     def mode(self, mode):
         
