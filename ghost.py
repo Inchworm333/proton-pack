@@ -63,8 +63,6 @@ def main():
         global mode
         global heating
         global wand_pulse_val
-        global firingMode
-        global shootingButton
         global songPlaying
 
         while (time.time() - start) < PWM_RUN_TIME:
