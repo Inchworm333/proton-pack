@@ -108,3 +108,8 @@ class Cyclotron:
     def slime_bubble_start(self):
         for led in self.leds:
             self.slime_bubble_function(led)
+
+    def kill_all(self):
+        self.stop_spin()
+        for led in self.leds:
+            led.close()

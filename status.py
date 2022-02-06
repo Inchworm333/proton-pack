@@ -32,3 +32,6 @@ class FiringStatusLeds:
             value.pulse(0, 3, 1)
         self.all_off()
 
+    def kill_all(self):
+        for led in self.leds:
+            led.close()

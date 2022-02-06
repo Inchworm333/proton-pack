@@ -113,13 +113,19 @@ def main():
                         if statusleds is not None:
                             statusleds.fade_off()
                             statusleds.all_off()
-                            statusleds.blink("yellow")
                         if vent is not None:
                             vent.fade_off()
 
+                        time.sleep(20)
+
+                        cyclotron.kill_all()
                         cyclotron = None
+                        statusleds.kill_all()
+                        statusleds = None
+                        vent.kill_all()
                         vent = None
                         shooting.kill_all()
+                        shooting = None
 
                     powerOn = False
                     mode = 0
@@ -208,14 +214,19 @@ def main():
                         if statusleds is not None:
                             statusleds.fade_off()
                             statusleds.all_off()
-                            statusleds.blink("yellow")
                         if vent is not None:
                             vent.fade_off()
 
+                        time.sleep(20)
+
+                        cyclotron.kill_all()
                         cyclotron = None
+                        statusleds.kill_all()
                         statusleds = None
+                        vent.kill_all()
                         vent = None
                         shooting.kill_all()
+                        shooting = None
 
                     powerOn = False
                     mode = 0

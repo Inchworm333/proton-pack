@@ -17,8 +17,15 @@ class Background:
         self.thread.start()
 
     def stopbg(self):
+        self.thread.join()
+        self.thread = None
         self.sound.stop()
 
     def playbg_function(self):
         self.sound.play(-1)
-
+    
+    def change_sound(self, sound):
+        self.stopbg()
+        self.sound = sound
+        self.playbg()
+        self.thread.join()

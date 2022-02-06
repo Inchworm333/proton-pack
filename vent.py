@@ -56,3 +56,6 @@ class Vent:
 
     def vent(self):
         self.led.pulse(0, 0.85, (1,1,1), (0,0,0), 1, False)
+
+    def kill_all(self):
+        self.led.close()
