@@ -117,7 +117,7 @@ def main():
                         if vent is not None:
                             vent.fade_off()
 
-                        time.sleep(20)
+                        time.sleep(5)
 
                         cyclotron.kill_all()
                         cyclotron = None
@@ -219,7 +219,7 @@ def main():
                         if vent is not None:
                             vent.fade_off()
 
-                        time.sleep(20)
+                        time.sleep(5)
 
                         cyclotron.kill_all()
                         cyclotron = None

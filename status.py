@@ -33,5 +33,5 @@ class FiringStatusLeds:
         self.all_off()
 
     def kill_all(self):
-        for led in self.leds:
+        for name, led in self.leds.items():
             led.close()

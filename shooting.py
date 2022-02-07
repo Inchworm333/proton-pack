@@ -12,8 +12,8 @@ mixer.init(buffer=512)
 class Shooting:
 
     def __init__(self):
-        #self.spin_speed = spin_speed
-        #self.heating = heating
+        #self.cyclotron = cyclotron
+        #self.vent = vent
         #self.status = status
 
         self.thread_arm_disarm = None
@@ -49,14 +49,12 @@ class Shooting:
                 self.firing_mode.wait_for_press()
                 self.armed_sound.play()
                 print("true")
-                self.start_fire()
                 self.can_fire = True
             if (self.can_fire):
                 self.firing_mode.wait_for_release()
                 self.disarm_sound.play()
                 print("false")
                 self.can_fire = False
-                self.stop_fire()
 
     def start_stop_fire(self):
         while True:
@@ -75,13 +73,15 @@ class Shooting:
                 self.firing_start_sound.stop()
 
     def kill_all(self):
-        self.firing_mode.close()
-        self.fire_button.close()
+        self.thread_arm_disarm = None
+        self.thread_start_stop_fire = None
 
         self.firing_loop_sound.stop()
         self.firing_stop_sound.stop()
         self.firing_start_sound.stop()
 
+        self.firing_mode.close()
+        self.fire_button.close()
 
     def mode(self, mode):
         
