@@ -16,6 +16,7 @@ class Cyclotron:
         
         self.spin = False
         self.thread = None
+        self.speed_thread = None
         self.color = colorzero.Color("red")
         self.speed = 0.85
         self.start_spin(self.spin_function)
@@ -51,6 +52,17 @@ class Cyclotron:
         self.thread.join()
         for led in self.leds:
             led.off()
+
+    def spin_speed_up_function(self):
+        while True:
+            if self.speed != 0.40:
+            self.speed -= 0.03
+            time.sleep(1)
+
+    def spin_speed_up(self):
+        if self.spin:
+            self.thread.join()
+            # TODO finish function and maybe create global variable to track fired amount
 
     def all_on(self):
         for led in self.leds:

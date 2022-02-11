@@ -30,10 +30,7 @@ class Shooting:
 
         self.can_fire = False
 
-
         self.fire_button = gpiozero.Button(27, pull_up=False)
-        self.fire_button.hold_time = 0.05
-
 
         self.firing_listeners()
 
@@ -48,12 +45,10 @@ class Shooting:
             if (self.can_fire is False):
                 self.firing_mode.wait_for_press()
                 self.armed_sound.play()
-                print("true")
                 self.can_fire = True
             if (self.can_fire):
                 self.firing_mode.wait_for_release()
                 self.disarm_sound.play()
-                print("false")
                 self.can_fire = False
 
     def start_stop_fire(self):
