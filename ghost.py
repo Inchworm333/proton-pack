@@ -17,7 +17,7 @@ from background import Background
 import helpers
 
 mixer.init(buffer=512)
-sound = mixer.Sound("sounds/spark6.wav")
+sound = mixer.Sound("sounds/startup_sound.wav")
 sound.play()
 
 #VARIABLES
@@ -159,7 +159,6 @@ def main():
                     mode += 1
                     if debug:
                         print("Mode = " + helpers.mode_decode(mode))
-                    #TODO will need to edit cyclotron.py to add sound files
                     cyclotron.mode(mode)
                     shooting.mode(mode)
                     last = 'mode change'

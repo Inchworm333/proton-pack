@@ -5,6 +5,7 @@ import colorzero
 from pygame import mixer 
 import helpers
 import random
+import gpiozero.threads
 
 mixer.init(buffer=512)
 
@@ -35,8 +36,8 @@ class Shooting:
         self.firing_listeners()
 
     def firing_listeners(self):
-        self.thread_arm_disarm = threading.Thread(target=self.arm_disarm)
-        self.thread_start_stop_fire = threading.Thread(target=self.start_stop_fire)
+        self.thread_arm_disarm = gpiozero.threads.GPIOThread(self.arm_disarm)
+        self.thread_start_stop_fire = gpiozero.threads.GPIOThread(self.start_stop_fire)
         self.thread_arm_disarm.start()
         self.thread_start_stop_fire.start()
 
@@ -68,8 +69,8 @@ class Shooting:
                 self.firing_start_sound.stop()
 
     def kill_all(self):
-        self.thread_arm_disarm = None
-        self.thread_start_stop_fire = None
+        self.thread_arm_disarm.stop()
+        self.thread_start_stop_fire.stop()
 
         self.firing_loop_sound.stop()
         self.firing_stop_sound.stop()
