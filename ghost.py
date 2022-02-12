@@ -17,7 +17,7 @@ from background import Background
 import helpers
 
 mixer.init(buffer=512)
-sound = mixer.Sound("sounds/startup_sound.wav")
+sound = mixer.Sound("sounds/mm_press_start.wav")
 sound.play()
 
 #VARIABLES

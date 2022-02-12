@@ -56,8 +56,8 @@ class Cyclotron:
     def spin_speed_up_function(self):
         while True:
             if self.speed != 0.40:
-            self.speed -= 0.03
-            time.sleep(1)
+                self.speed -= 0.03
+                time.sleep(1)
 
     def spin_speed_up(self):
         if self.spin:
