@@ -88,10 +88,10 @@ def main():
                     cyclotron = Cyclotron()
                     statusleds = FiringStatusLeds()
                     vent = Vent()
-                    shooting = Shooting()
 
                     time.sleep(3)
                     bgsound = Background()
+                    shooting = Shooting(bgsound)
 
                     packOn = True
                     last = 'power up'

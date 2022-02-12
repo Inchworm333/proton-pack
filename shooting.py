@@ -12,10 +12,11 @@ mixer.init(buffer=512)
 
 class Shooting:
 
-    def __init__(self):
+    def __init__(self, background):
         #self.cyclotron = cyclotron
         #self.vent = vent
         #self.status = status
+        self.background = background
 
         self.can_fire_event = threading.Event()
 
@@ -52,6 +53,8 @@ class Shooting:
         if self.can_fire_event.is_set():
             self.firing_mode.wait_for_release()
             self.disarm_sound.play()
+            time.sleep(self.disarm_sound - 0.1)
+            self.background_default()
             self.can_fire_event.clear()
 
     def start_stop_fire(self):
@@ -82,41 +85,51 @@ class Shooting:
         mode_decoded = helpers.mode_decode(mode)
 
         if mode_decoded == "proton":
-            shutdown = mixer.Sound("sounds/proton_pack_rail_close.wav")
-            shutdown.play()
-            time.sleep(shutdown.get_length() + 0.5)
-            mixer.Sound("sounds/proton_pack_rail_open.wav").play()
+            close = mixer.Sound("sounds/proton_pack_rail_close.wav")
+            self.play_wait(close, 0.5)
+            open = mixer.Sound("sounds/proton_pack_rail_open.wav")
+            open.play()
 
             self.firing_start_sound = mixer.Sound("sounds/protongun_turbo_head.wav")
             self.firing_stop_sound = mixer.Sound("sounds/protongun_turbo_tail.wav")
             self.firing_loop_sound = mixer.Sound("sounds/protongun_turbo_loop.wav")
 
         elif mode_decoded == "slime":
-            shutdown = mixer.Sound("sounds/proton_pack_rail_close.wav")
-            shutdown.play()
-            time.sleep(shutdown.get_length() + 0.5)
-            mixer.Sound("sounds/proton_pack_slime_open.wav").play()
+            close = mixer.Sound("sounds/proton_pack_rail_close.wav")
+            self.play_wait(close, 0.5)
+            open = mixer.Sound("sounds/proton_pack_slime_open.wav")
+            self.play_wait(open, 0.1)
+            self.background.change_sound("sounds/slime_labs_glass_bubbles_loop_1.wav")
 
             self.firing_start_sound = mixer.Sound("sounds/slimegun_head.wav")
             self.firing_stop_sound = mixer.Sound("sounds/slimegun_tail.wav")
             self.firing_loop_sound = mixer.Sound("sounds/slimegun_loop.wav")
 
         elif mode_decoded == "stasis":
-            shutdown = mixer.Sound("sounds/proton_pack_slime_close.wav")
-            shutdown.play()
-            time.sleep(shutdown.get_length() + 0.5)
-            mixer.Sound("sounds/proton_pack_ice_open.wav")
+            close = mixer.Sound("sounds/proton_pack_slime_close.wav")
+            self.play_wait(close, 0.5)
+            open = mixer.Sound("sounds/proton_pack_ice_open.wav")
+            self.play_wait(open, 0.1)
+            self.background.change_sound("sounds/proton_ice_freezing_loop.wav")
 
             self.firing_start_sound = mixer.Sound("sounds/proton_stasis_head.wav")
             self.firing_stop_sound = mixer.Sound("sounds/proton_stasis_tail.wav")
             self.firing_loop_sound = mixer.Sound("sounds/proton_stasis_loop.wav")
 
         elif mode_decoded == "meson":
-            shutdown = mixer.Sound("sounds/proton_pack_ice_close.wav")
-            shutdown.play()
-            time.sleep(shutdown.get_length() + 0.5)
-            mixer.Sound("sounds/proton_pack_rail_open.wav").play()
+            close = mixer.Sound("sounds/proton_pack_ice_close.wav")
+            self.play_wait(close, 0.5)
+            open = mixer.Sound("sounds/proton_pack_rail_open.wav")
+            self.play_wait(open, 0.1)
+            self.background_default()
 
             #self.firing_start_sound = mixer.Sound("sounds/")
             #self.firing_stop_sound = mixer.Sound("sounds/")
             #self.firing_loop_sound = mixer.Sound("sounds/")
+
+    def play_wait(self, sound, delay=0):
+        sound.play()
+        time.sleep(sound.get_length() + delay)
+
+    def background_default(self):
+        self.background.change_sound("sounds/protongun_amb_hum_loop.wav")
