@@ -52,10 +52,10 @@ class Shooting:
 
         if self.can_fire_event.is_set():
             self.firing_mode.wait_for_release()
+            self.can_fire_event.clear()
             self.disarm_sound.play()
             time.sleep(self.disarm_sound - 0.1)
             self.background_default()
-            self.can_fire_event.clear()
 
     def start_stop_fire(self):
         while self.can_fire_event.is_set():
