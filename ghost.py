@@ -54,8 +54,6 @@ def main():
 
     wand_PWM = proton_reader(pi, PWM_GPIO)
 
-    start = time.time()
-
     global packOn
     global mode
     global heating
@@ -63,6 +61,8 @@ def main():
     global songPlaying
 
     while True:
+
+        start = time.time()
 
         while (time.time() - start) < PWM_RUN_TIME:
             
