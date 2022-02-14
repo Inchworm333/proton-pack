@@ -50,20 +50,19 @@ def main():
         debug = True
         print("debugging mode on")
 
+    pi = pigpio.pi()
+
+    wand_PWM = proton_reader(pi, PWM_GPIO)
+
+    start = time.time()
+
+    global packOn
+    global mode
+    global heating
+    global wand_pulse_val
+    global songPlaying
 
     while True:
-
-        pi = pigpio.pi()
-
-        wand_PWM = proton_reader(pi, PWM_GPIO)
-
-        start = time.time()
-
-        global packOn
-        global mode
-        global heating
-        global wand_pulse_val
-        global songPlaying
 
         while (time.time() - start) < PWM_RUN_TIME:
             
