@@ -50,7 +50,7 @@ def bubble_function(self, fade_in_time, on_color, off_color):
         on_color = self.random_RGB(on_color)
         off_color = self.random_RGB(off_color)
 
-        self._blink_device(0, 0, on_time, 0, on_color, off_color, 1)
+        self._blink_device(0, 0, on_time, 0, on_color, off_color, 1, False)
 
 gpiozero.RGBLED.bubble_function = bubble_function
 

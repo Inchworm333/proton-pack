@@ -32,8 +32,6 @@ class Shooting:
 
         self.firing_mode = gpiozero.Button(22, pull_up=False)
 
-        self.firing_mode.bounce_time = 3
-
         self.fire_button = gpiozero.Button(27, pull_up=False)
 
         self.firing_listeners()
@@ -45,30 +43,35 @@ class Shooting:
         self.thread_start_stop_fire.start()
 
     def arm_disarm(self):
-        if not self.can_fire_event.is_set():
+        if (not self.can_fire_event.is_set()):
+            print('waiting for firing mode to be on')
             self.firing_mode.wait_for_press()
             self.armed_sound.play()
+            time.sleep(3)
             self.can_fire_event.set()
 
         if self.can_fire_event.is_set():
             self.firing_mode.wait_for_release()
             self.can_fire_event.clear()
             self.disarm_sound.play()
-            time.sleep(self.disarm_sound - 0.1)
+            time.sleep(self.disarm_sound.get_length() - 0.1)
             self.background_default()
 
     def start_stop_fire(self):
-        while self.can_fire_event.is_set():
-            self.fire_button.wait_for_press()
-            self.firing_start_sound.play()
-            time.sleep(self.firing_start_sound.get_length() - 0.25)
-            self.firing_loop_sound.play(-1)
+        while True:
+            while self.can_fire_event.is_set():
+                print('waiting for start firing')
+                self.fire_button.wait_for_press()
+                self.firing_start_sound.play()
+                time.sleep(self.firing_start_sound.get_length() - 0.25)
+                self.firing_loop_sound.play(-1)
 
-            self.fire_button.wait_for_release()
-            self.firing_loop_sound.stop()
-            self.firing_stop_sound.play()
-        else:
-            self.can_fire_event.wait()
+                print('waiting for stop firing')
+                self.fire_button.wait_for_release()
+                self.firing_loop_sound.stop()
+                self.firing_stop_sound.play()
+            else:
+                self.can_fire_event.wait()
 
     def kill_all(self):
         self.can_fire_event.clear()

@@ -26,6 +26,6 @@ class Background:
     
     def change_sound(self, sound):
         self.stopbg()
-        self.sound = sound
+        self.sound = mixer.Sound(sound)
         self.playbg()
         self.thread.join()
