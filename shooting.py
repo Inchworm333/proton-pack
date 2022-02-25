@@ -5,7 +5,6 @@ import colorzero
 from pygame import mixer 
 import helpers
 import random
-import _thread
 
 mixer.init(buffer=512)
 
@@ -22,6 +21,8 @@ class Shooting:
 
         self.thread_arm_disarm = None
         self.thread_start_stop_fire = None
+
+        self.stop = threading.Event()
 
         self.armed_sound = mixer.Sound("sounds/ai_protongun_powerup.wav")
         self.disarm_sound = mixer.Sound("sounds/protongun_shutdown.wav")
@@ -43,30 +44,38 @@ class Shooting:
         self.thread_start_stop_fire.start()
 
     def arm_disarm(self):
-        if (not self.can_fire_event.is_set()):
-            print('waiting for firing mode to be on')
-            self.firing_mode.wait_for_press()
-            self.armed_sound.play()
-            time.sleep(3)
-            self.can_fire_event.set()
+        while True:
+            if (not self.can_fire_event.is_set()):
+                self.firing_mode.wait_for_press()
+                print('pressed')
+                print(self.stop.is_set())
+                if (self.stop.is_set()):
+                    print('killed')
+                    return
+                self.armed_sound.play()
+                time.sleep(3)
+                self.can_fire_event.set()
 
-        if self.can_fire_event.is_set():
-            self.firing_mode.wait_for_release()
-            self.can_fire_event.clear()
-            self.disarm_sound.play()
-            time.sleep(self.disarm_sound.get_length() - 0.1)
-            self.background_default()
+            if self.can_fire_event.is_set():
+                self.firing_mode.wait_for_release()
+                print('released')
+                print(self.stop.is_set())
+                if (self.stop.is_set()):
+                    print('killed')
+                    return
+                self.can_fire_event.clear()
+                self.disarm_sound.play()
+                time.sleep(self.disarm_sound.get_length() - 0.1)
+                self.background_default()
 
     def start_stop_fire(self):
         while True:
             while self.can_fire_event.is_set():
-                print('waiting for start firing')
                 self.fire_button.wait_for_press()
                 self.firing_start_sound.play()
                 time.sleep(self.firing_start_sound.get_length() - 0.25)
                 self.firing_loop_sound.play(-1)
 
-                print('waiting for stop firing')
                 self.fire_button.wait_for_release()
                 self.firing_loop_sound.stop()
                 self.firing_stop_sound.play()
@@ -74,14 +83,13 @@ class Shooting:
                 self.can_fire_event.wait()
 
     def kill_all(self):
+        print('trying to kill')
+        self.stop.set()
         self.can_fire_event.clear()
 
         self.firing_loop_sound.stop()
         self.firing_stop_sound.stop()
         self.firing_start_sound.stop()
-
-        self.firing_mode.close()
-        self.fire_button.close()
 
     def mode(self, mode):
         
@@ -136,3 +144,4 @@ class Shooting:
 
     def background_default(self):
         self.background.change_sound("sounds/protongun_amb_hum_loop.wav")
+

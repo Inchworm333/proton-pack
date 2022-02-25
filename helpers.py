@@ -90,3 +90,4 @@ def random_RGB(self, color):
     return (R, G, B)
 
 gpiozero.RGBLED.random_RGB = random_RGB
+

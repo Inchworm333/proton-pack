@@ -81,6 +81,9 @@ def main():
                     if debug:
                         print('power up')
 
+                    packOn = True
+                    last = 'power up'
+
                     sound = mixer.Sound("sounds/protongun_powerup.wav")
                     sound.play()
 
@@ -92,21 +95,20 @@ def main():
                     bgsound = Background()
                     shooting = Shooting(bgsound)
 
-                    packOn = True
-                    last = 'power up'
                     break
                 elif near(wand_pulse, 14):
                     #Power Down
                     if debug:
                         print('power down')
+
                     if last != 'power down':
+
+                        last = 'power down'
                         shooting.kill_all()
-                        shooting = None
+                        powerOn = False
 
                         sound = mixer.Sound("sounds/power_down_2.wav")
                         sound.play()
-                        time.sleep(0.5)
-                        bgsound.stopbg()
 
                         if cyclotron is not None:
                             cyclotron.fade_off(mode)
@@ -116,6 +118,9 @@ def main():
                         if vent is not None:
                             vent.fade_off()
 
+                        time.sleep(0.5)
+                        bgsound.stopbg()
+
                         time.sleep(5)
 
                         cyclotron.kill_all()
@@ -124,48 +129,54 @@ def main():
                         statusleds = None
                         vent.kill_all()
                         vent = None
+                        shooting.kill_all()
+                        shooting = None
 
-                    powerOn = False
-                    mode = 0
-                    last = 'power down'
+                        mode = 0
                     break
                 elif near(wand_pulse, 20):
                     #Overheat start
                     if debug:
                         print('overheat started')
+                    last = 'overheat started'
+
                     #SOUNDS HERE
                     sound = mixer.Sound("sounds/protonpack_overheat_beep.wav")
                     sound.play()
                     vent.overheat_pulse()
                     vent.fade_off()
-                    last = 'overheat started'
                     break
                 elif near(wand_pulse, 26):
                     #Vent Start (manual or auto)
                     if debug:
                         print('venting started')
+                    last = 'venting started'
+
                     #SOUNDS HERE
                     vent.vent()
                     vent.idle_pulse()
-                    last = 'venting started'
                     break
                 elif near(wand_pulse, 32):
                     #Mode Change
-                    sound = mixer.Sound("sounds/proton_pack_rail_open.wav")
-                    sound.play()
                     if debug:
                         print('Mode Changed')
                     mode += 1
                     if debug:
                         print("Mode = " + helpers.mode_decode(mode))
+                    last = 'mode change'
+
+                    sound = mixer.Sound("sounds/proton_pack_rail_open.wav")
+                    sound.play()
+
                     cyclotron.mode(mode)
                     shooting.mode(mode)
-                    last = 'mode change'
                     break
                 elif near(wand_pulse, 38):
                     #Song Request
                     if debug:
                         print('playing song')
+                    last = 'playing song'
+
                     if (songPlaying is False):
                         bgsound.stopbg()
                         songPlaying = mixer.Sound("sounds/theme_song.wav")
@@ -175,25 +186,26 @@ def main():
                         songPlaying.stop()
                         songPlaying = False
                         bgsound.playbg()
-                    last = 'playing song'
                     break
                 elif near(wand_pulse, 44):
                     #Intense Fire ON
                     if debug:
                         print('intense fire on')
+                    last = 'intense fire on'
+
                     #SOUNDS HERE
                     heating = True
                     vent.heat_up(heating)
-                    last = 'intense fire on'
                     break
                 elif near(wand_pulse, 50):
                     #Intense Fire OFF
                     if debug:
                         print('Intense fire off')
+                    last = 'intense fire off' 
+
                     #SOUNDS HERE
                     heating = False
                     vent.cool_down(heating)
-                    last = 'intense fire off'
                     break
                 elif near(wand_pulse, 56):
                     #Power Down with sound
@@ -201,13 +213,12 @@ def main():
                         print('power down (with sound)')
                     #SOUNDS HERE
                     if last != 'power down':
+                        powerOn = False
+                        last = 'power down'
                         shooting.kill_all()
-                        shooting = None
 
                         sound = mixer.Sound("sounds/power_down_2.wav")
                         sound.play()
-                        time.sleep(0.5)
-                        bgsound.stopbg()
 
                         if cyclotron is not None:
                             cyclotron.fade_off(mode)
@@ -217,6 +228,9 @@ def main():
                         if vent is not None:
                             vent.fade_off()
 
+                        time.sleep(0.5)
+                        bgsound.stopbg()
+
                         time.sleep(5)
 
                         cyclotron.kill_all()
@@ -225,13 +239,13 @@ def main():
                         statusleds = None
                         vent.kill_all()
                         vent = None
+                        shooting.kill_all()
+                        shooting = None
 
-                    powerOn = False
-                    mode = 0
-                    last = 'power down'
+                        mode = 0
                     break
-                wand_pulse_val = None
             else:
+                wand_pulse_val = None
                 if debug:
                     print('wand_pulse_val is None')
 
