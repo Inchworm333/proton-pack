@@ -22,7 +22,7 @@ class Shooting:
         self.thread_arm_disarm = None
         self.thread_start_stop_fire = None
 
-        self.stop = threading.Event()
+        self.on_event = threading.Event()
 
         self.armed_sound = mixer.Sound("sounds/ai_protongun_powerup.wav")
         self.disarm_sound = mixer.Sound("sounds/protongun_shutdown.wav")
@@ -31,25 +31,31 @@ class Shooting:
         self.firing_stop_sound = mixer.Sound("sounds/protongun_turbo_tail.wav")
         self.firing_loop_sound = mixer.Sound("sounds/protongun_turbo_loop.wav")
 
-        self.firing_mode = gpiozero.Button(22, pull_up=True)
+        self.firing_mode = gpiozero.Button(22, pull_up=False)
 
-        self.fire_button = gpiozero.Button(27, pull_up=True)
+        self.fire_button = gpiozero.Button(27, pull_up=False)
+
+        #self.ison = gpiozero.Button(23, pull_up=False)
+        #
+        #self.ison.when_pressed = self.turned_on
+
+        #self.ison.when_released = self.turned_off
 
         self.firing_listeners()
 
     def firing_listeners(self):
         self.thread_arm_disarm = threading.Thread(target=self.arm_disarm)
         self.thread_start_stop_fire = threading.Thread(target=self.start_stop_fire)
+        self.on_event.set()
         self.thread_arm_disarm.start()
         self.thread_start_stop_fire.start()
 
     def arm_disarm(self):
-        while True:
+        while self.on_event.is_set():
             if (not self.can_fire_event.is_set()):
                 self.firing_mode.wait_for_press()
                 print('pressed')
-                print(self.stop.is_set())
-                if (self.stop.is_set()):
+                if (not self.on_event.is_set()):
                     print('killed')
                     return
                 self.armed_sound.play()
@@ -59,28 +65,39 @@ class Shooting:
             if self.can_fire_event.is_set():
                 self.firing_mode.wait_for_release()
                 print('released')
-                print(self.stop.is_set())
-                if (self.stop.is_set()):
+                if (not self.on_event.is_set()):
                     print('killed')
                     return
                 self.can_fire_event.clear()
                 self.disarm_sound.play()
                 time.sleep(self.disarm_sound.get_length() - 0.1)
                 self.background_default()
+        else:
+            self.on_event.wait()
 
     def start_stop_fire(self):
         while True:
             while self.can_fire_event.is_set():
+                print('waiting for firing')
                 self.fire_button.wait_for_press()
                 self.firing_start_sound.play()
                 time.sleep(self.firing_start_sound.get_length() - 0.25)
                 self.firing_loop_sound.play(-1)
 
+                print('waiting for stop firing')
                 self.fire_button.wait_for_release()
                 self.firing_loop_sound.stop()
                 self.firing_stop_sound.play()
             else:
                 self.can_fire_event.wait()
+
+#    def turned_on(self):
+#        print('setting on')
+#        self.on_event.set()
+#
+#    def turned_off(self):
+#        print('setting off')
+#        self.on_event.clear()
 
     def kill_all(self):
         print('trying to kill')
