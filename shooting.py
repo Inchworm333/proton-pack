@@ -35,11 +35,11 @@ class Shooting:
 
         self.fire_button = gpiozero.Button(27, pull_up=False)
 
-        #self.ison = gpiozero.Button(23, pull_up=False)
-        #
-        #self.ison.when_pressed = self.turned_on
+        self.ison = gpiozero.Button(23, pull_up=False)
+        
+        self.ison.when_pressed = self.turned_on
 
-        #self.ison.when_released = self.turned_off
+        self.ison.when_released = self.turned_off
 
         self.firing_listeners()
 
@@ -91,22 +91,22 @@ class Shooting:
             else:
                 self.can_fire_event.wait()
 
-#    def turned_on(self):
-#        print('setting on')
-#        self.on_event.set()
-#
-#    def turned_off(self):
-#        print('setting off')
-#        self.on_event.clear()
+    def turned_on(self):
+        print('setting on')
+        self.on_event.set()
 
-    def kill_all(self):
-        print('trying to kill')
-        self.stop.set()
-        self.can_fire_event.clear()
+    def turned_off(self):
+        print('setting off')
+        self.on_event.clear()
 
-        self.firing_loop_sound.stop()
-        self.firing_stop_sound.stop()
-        self.firing_start_sound.stop()
+    #def kill_all(self):
+    #    print('trying to kill')
+    #    self.stop.set()
+    #    self.can_fire_event.clear()
+
+    #    self.firing_loop_sound.stop()
+    #    self.firing_stop_sound.stop()
+    #    self.firing_start_sound.stop()
 
     def mode(self, mode):
         

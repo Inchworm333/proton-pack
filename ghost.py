@@ -104,7 +104,7 @@ def main():
                     if last != 'power down':
 
                         last = 'power down'
-                        shooting.kill_all()
+                        #shooting.kill_all()
                         powerOn = False
 
                         sound = mixer.Sound("sounds/power_down_2.wav")
@@ -129,7 +129,7 @@ def main():
                         statusleds = None
                         vent.kill_all()
                         vent = None
-                        shooting.kill_all()
+                        #shooting.kill_all()
                         shooting = None
 
                         mode = 0
@@ -215,7 +215,7 @@ def main():
                     if last != 'power down':
                         powerOn = False
                         last = 'power down'
-                        shooting.kill_all()
+                        #shooting.kill_all()
 
                         sound = mixer.Sound("sounds/power_down_2.wav")
                         sound.play()
@@ -239,7 +239,7 @@ def main():
                         statusleds = None
                         vent.kill_all()
                         vent = None
-                        shooting.kill_all()
+                        #shooting.kill_all()
                         shooting = None
 
                         mode = 0
