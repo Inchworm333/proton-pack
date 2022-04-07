@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import gpiozero
 import curses
 from curses import wrapper
