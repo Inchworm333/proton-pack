@@ -101,7 +101,7 @@ class Cyclotron:
                 if led.is_lit:
                     led.pulse(0, 3, led.color, (0,0,0), 1)
                     led.off()
-        else:
+        else: #slime drain effect
             self.all_on()
             self.leds[0].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
             self.leds[1].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)

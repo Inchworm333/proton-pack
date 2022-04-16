@@ -43,14 +43,13 @@ def pulse_random(self, on_color, off_color, range):
 
 gpiozero.RGBLED.pulse_random = pulse_random
 
-
 def bubble_function(self, fade_in_time, on_color, off_color):
     while True:
         on_time = random.uniform(*fade_in_time)
         on_color = self.random_RGB(on_color)
         off_color = self.random_RGB(off_color)
 
-        self._blink_device(0, 0, on_time, 0, on_color, off_color, 1, False)
+        self._blink_device(0, 0, on_time, 0, on_color, off_color, 1, 120)
 
 gpiozero.RGBLED.bubble_function = bubble_function
 
