@@ -1,15 +1,17 @@
 # https://auth0.com/blog/state-pattern-in-python/
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from mode import State
 
 class Pack:
 
-    _stat = None
+    _state = None
+    _previous = None #TODO change this to off after class is created
 
     def __init__(self, state: State) -> None:
-        self.setPack(state)
+        self.setState(state)
 
-    def setPack(self, state: State):
+    def setState(self, state: State):
         self._state = state
         self._state.pack = self
 
