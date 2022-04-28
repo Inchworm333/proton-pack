@@ -2,11 +2,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from mode import State
+from off import Off
 
 class Pack:
 
     _state = None
-    _previous = None #TODO change this to off after class is created
+    _previous = Off()
 
     def __init__(self, state: State) -> None:
         self.setState(state)
@@ -36,5 +37,6 @@ class Pack:
 
     def  packOff(self):
         self._state.packOff()
+        self.setState(Off())
 
     #TODO check if mode stays same after disarm

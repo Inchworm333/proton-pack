@@ -7,9 +7,17 @@ class State(ABC):
     def context(self) -> Pack:
         return self._pack
 
+    @property
+    def previous(self) -> State:
+        return self.context._previous
+
     @context.setter
     def context(self, pack: Pack) -> None:
         self._pack = pack
+
+    @previous.setter
+    def previous(self, previous: State) -> None:
+        self.context._previous = previous
 
     @abstractmethod
     def arm(self) -> None:
