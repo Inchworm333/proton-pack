@@ -9,8 +9,6 @@ class Background:
     def __init__(self):
         self.sound = mixer.Sound("sounds/protongun_amb_hum_loop.wav")
         self.thread = None
-        self.playbg()
-
 
     def playbg(self):
         self.thread = threading.Thread(target=self.playbg_function)

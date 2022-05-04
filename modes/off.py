@@ -7,19 +7,23 @@ class Off(State):
 
     def __init__(self) -> None:
         """
-        Sets up leds to prevent pin bleed
+        Turns off leds to prevent rogue voltage to pins
         """
 
-        self.cyc1 = gpiozero.RGBLED(0,1,2)
-        self.cyc2 = gpiozero.RGBLED(3,4,5)
-        self.cyc3 = gpiozero.RGBLED(6,7,8)
-        self.cyc4 = gpiozero.RGBLED(9,10,11)
+        # kill all instantiated classes before killing leds
+        self.background.stopbg()
 
-        self.statRed = gpiozero.PWMLED(15)
-        self.statYellow = gpiozero.PWMLED(16)
-        self.statGreen = gpiozero.PWMLED(17)
+        # kills all leds
+        self.cyc1.off()
+        self.cyc2.off()
+        self.cyc3.off()
+        self.cyc4.off()
 
-        self.fule = gpiozero.RGBLED(13,19,26)
+        self.statRed.off()
+        self.statYellow.off()
+        self.statGreen.off()
+
+        self.fule.off()
 
     def arm(self) -> None:
         pass

@@ -3,6 +3,13 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from mode import State
 from off import Off
+from pygame import mixer
+import gpiozero
+
+from ../background import Background
+from ../cyclotron import Cyclotron
+from ../status import FiringStatusLeds
+from ../vent import Vent
 
 class Pack:
 
@@ -11,6 +18,12 @@ class Pack:
 
     def __init__(self, state: State) -> None:
         self.setState(state)
+
+        # sets up all classes
+        self.background = Background()
+        self.cyclotron = Cyclotron()
+        self.statusleds = FiringStatusLeds()
+        self.vent = Vent()
 
     def setState(self, state: State):
         self._state = state

@@ -23,6 +23,9 @@ def mode_decode(modeID):
         #Meson
         return "meson"
 
+def play_wait(sound, delay=0):
+    sound.play()
+    time.sleep(sound.get_length() + delay())
 
 def pulse_random_function(self, on_color, off_color, range):
     while True:

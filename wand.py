@@ -1,11 +1,11 @@
 import pigpio
 
-class proton_reader:
+class ProtonReader:
 
-    def __init__(self, pi, gpio):
+    def __init__(self):
 
-        self.pi = pi
-        self.gpio = gpio
+        self.pi = pigpio.pi()
+        self.gpio = 12
 
         self._start_tick = None 
         self._end_tick = None

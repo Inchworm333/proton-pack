@@ -20,8 +20,6 @@ class Vent:
 
         self.col_num = 0
 
-        self.idle_pulse()
-
     def idle_pulse(self):
         self.led.pulse_random(self.colors[0], self.colors[1], (1,3))
 

@@ -19,7 +19,7 @@ class Cyclotron:
         self.speed_thread = None
         self.color = colorzero.Color("red")
         self.speed = 0.85
-        self.start_spin(self.spin_function)
+        self.all_off()
 
     def spin_function(self):
         while self.spin:
@@ -67,6 +67,10 @@ class Cyclotron:
     def all_on(self):
         for led in self.leds:
             led.color = self.color
+
+    def all_off(self):
+        for led in self.leds:
+            led.off()
 
     def mode(self, mode):
         
