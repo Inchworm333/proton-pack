@@ -16,9 +16,10 @@ class Cyclotron:
         
         self.spin = False
         self.thread = None
+        self.speed_thread = None
         self.color = colorzero.Color("red")
         self.speed = 0.85
-        self.start_spin(self.spin_function)
+        self.all_off()
 
     def spin_function(self):
         while self.spin:
@@ -52,9 +53,24 @@ class Cyclotron:
         for led in self.leds:
             led.off()
 
+    def spin_speed_up_function(self):
+        while True:
+            if self.speed != 0.40:
+                self.speed -= 0.03
+                time.sleep(1)
+
+    def spin_speed_up(self):
+        if self.spin:
+            self.thread.join()
+            # TODO finish function and maybe create global variable to track fired amount
+
     def all_on(self):
         for led in self.leds:
             led.color = self.color
+
+    def all_off(self):
+        for led in self.leds:
+            led.off()
 
     def mode(self, mode):
         
@@ -89,7 +105,7 @@ class Cyclotron:
                 if led.is_lit:
                     led.pulse(0, 3, led.color, (0,0,0), 1)
                     led.off()
-        else:
+        else: #slime drain effect
             self.all_on()
             self.leds[0].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
             self.leds[1].pulse(0, 1.5, (0.05, 1, 0.08), (0,0,0), 1)
@@ -103,8 +119,13 @@ class Cyclotron:
             self.leds[3].off()
 
     def slime_bubble_function(self, led):
-        led.pulse(random.uniform(0.3, 1.8), 0, (0.05, random.uniform(0.73, 0.97), 0.08), (0.05, random.uniform(0.48, 0.67), 0.08))
+        led.bubble_random((0.5, 3), (0.05, (0.73, 0.97), 0.08), (0.05, (0.48, 0.67), 0.08))
 
     def slime_bubble_start(self):
         for led in self.leds:
             self.slime_bubble_function(led)
+
+    def kill_all(self):
+        self.stop_spin()
+        for led in self.leds:
+            led.close()

@@ -20,12 +20,21 @@ mixer.init(buffer=512)
 sound = mixer.Sound("sounds/mm_press_start.wav")
 sound.play()
 
+#VARIABLES
+packOn = False
+mode = 0
+heating = False
+wand_pulse_val = None
+debug = False
+songPlaying = False
+
 # Error file output
 errorLog = "../ghostLogs/ghostError.log"
 generalError = open("../ghostLogs/generalError.log", "w+")
 
 def main():
  
+    PWM_GPIO = 12     
     PWM_RUN_TIME = 60.0
     PWM_SAMPLE_TIME = 2.0
 
@@ -40,6 +49,8 @@ def main():
     if len(sys.argv) > 1:
         debug = True
         print("debugging mode on")
+
+    pi = pigpio.pi()
 
     wand_PWM = proton_reader(pi, PWM_GPIO)
 

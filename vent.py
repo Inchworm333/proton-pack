@@ -3,6 +3,7 @@ import gpiozero
 import colorzero
 import random
 import time
+import helpers
 
 class Vent:
 
@@ -19,14 +20,12 @@ class Vent:
 
         self.col_num = 0
 
-        self.idle_pulse()
-
     def idle_pulse(self):
-        self.led.pulse(random.random(), random.random(), self.colors[0], self.colors[1])
+        self.led.pulse_random(self.colors[0], self.colors[1], (1,3))
 
     def overheat_pulse(self):
         self.col_num = 4
-        self.led.pulse(random.uniform(0.3, 0.5), random.uniform(0.3, 0.5), colorzero.Color('white'), colorzero.Color(0.85,0.85,0.85))
+        self.led.pulse_random(colorzero.Color('white'), colorzero.Color(0.85,0.85,0.85), (0.3,1))
 
     def fade_off(self):
         while self.col_num > 0:
@@ -41,7 +40,7 @@ class Vent:
             if self.col_num != 4:
                 oldnum = self.col_num
                 self.col_num += 1
-                self.led.pulse(0, 5, self.colors[oldnum], self.colors[self.col_num], 1, False)
+                self.led.pulse(0, 3, self.colors[oldnum], self.colors[self.col_num], 1, False)
             else:
                 self.led.color = self.colors[4]
 
@@ -56,3 +55,6 @@ class Vent:
 
     def vent(self):
         self.led.pulse(0, 0.85, (1,1,1), (0,0,0), 1, False)
+
+    def kill_all(self):
+        self.led.close()
