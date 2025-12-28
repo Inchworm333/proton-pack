@@ -10,14 +10,14 @@ from pygame import mixer
 #Importing other files
 from cyclotron import Cyclotron
 from status import FiringStatusLeds
-from wand import proton_reader
+from wand import ProtonReader
 from vent import Vent
 from shooting import Shooting
 from background import Background
 import helpers
 
 mixer.init(buffer=512)
-sound = mixer.Sound("sounds/mm_press_start.wav")
+sound = mixer.Sound("./sounds/mm_press_start.wav")
 sound.play()
 
 # Error file output
@@ -41,7 +41,7 @@ def main():
         debug = True
         print("debugging mode on")
 
-    wand_PWM = proton_reader(pi, PWM_GPIO)
+    wand_PWM = ProtonReader(pi, PWM_GPIO)
 
     global packOn
     global mode
