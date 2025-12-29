@@ -12,6 +12,7 @@ class FiringStatusLeds:
         self.leds['red'] = gpiozero.PWMLED(15)
 
         self.speed = 0.25
+        self.all_off()
 
     def blink(self, color): 
         self.leds[color].blink(self.speed, self.speed)

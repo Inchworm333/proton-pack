@@ -23,6 +23,14 @@ sound.play()
 # Error file output
 errorLog = "../ghostLogs/ghostError.log"
 generalError = open("../ghostLogs/generalError.log", "w+")
+debug = False
+
+#Modules
+cyclotron = Cyclotron()
+statusleds = FiringStatusLeds()
+vent = Vent()
+bgsound = Background()
+shooting = Shooting(bgsound)
 
 def main():
  
@@ -41,7 +49,7 @@ def main():
         debug = True
         print("debugging mode on")
 
-    wand_PWM = ProtonReader(pi, PWM_GPIO)
+    wand_PWM = ProtonReader()
 
     global packOn
     global mode
@@ -75,10 +83,6 @@ def main():
 
                     sound = mixer.Sound("sounds/protongun_powerup.wav")
                     sound.play()
-
-                    cyclotron = Cyclotron()
-                    statusleds = FiringStatusLeds()
-                    vent = Vent()
 
                     time.sleep(3)
                     bgsound = Background()

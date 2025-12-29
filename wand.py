@@ -10,7 +10,7 @@ class ProtonReader:
         self._start_tick = None 
         self._end_tick = None
 
-        self._callback  = pi.callback(gpio, pigpio.EITHER_EDGE, self._callback_func)
+        self._callback  = self.pi.callback(self.gpio, pigpio.EITHER_EDGE, self._callback_func)
 
     #LEVEL
     #0 = change to low
